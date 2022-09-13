@@ -49,18 +49,15 @@ docker build -t dockerdl:latest /
 ```console
 docker run --gpus all --rm -it -h dockerdl dockerdl:latest bash
 ```
-Optionally launch a Jupyter notebook server
-```console
-docker run --gpus all --rm -it -h dockerdl -p 8888:8888 dockerdl:latest
-jupyter notebook --no-browser --port 8888 --NotebookApp.token='' --ip='*'
-```
 
-Or a JupyterLab server
-```console
-docker run --gpus all --rm -it -h dockerdl -p 8888:8888 dockerdl:latest
-jupyter lab --no-browser --port 8888 --ServerApp.token='' --ip='*'
-```
+# Other options
 
+## Jetbrains PyCharm Professional
+Follow the instructions [here](https://www.jetbrains.com/help/pycharm/docker.html).
+## VS Code
+1. install [vscode](https://code.visualstudio.com/Download)
+2. Install [Docker extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
+3. Install [Python exntension](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
 ## Issues
 
 If you find any issue please feel free to create an [issue](https://github.com/matifali/DockerDL/issues/new/choose) and submit a PR.
