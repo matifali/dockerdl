@@ -1,9 +1,25 @@
-# DockerDL  [![Docker](https://github.com/matifali/DockerDL/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/matifali/DockerDL/actions/workflows/docker-publish.yml)
+# DockerDL [![Docker](https://github.com/matifali/DockerDL/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/matifali/DockerDL/actions/workflows/docker-publish.yml)
 
 Deep Learning Docker Image
 
 Don't waste time on setting up a deep learning env while you can get a deep learning environmnet with everything pre-insatlled.
-This image uses **[mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamba.html)**[^1] to create an environment named **DL** and then install most of the packages using pip
+This image uses **[mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamba.html)**[^1] to create an environment named **DL** and then install most of the packages using pip.
+
+List of Packages insatlled:
+- [TensorFlow](https://www.tensorflow.org/)
+- [PyTorch](https://pytorch.org/)
+- [Numpy](https://numpy.org/)
+- [Scikit-Learn](https://scikit-learn.org/)
+- [Pandas](https://pandas.pydata.org/)
+- [Matplotlib](https://matplotlib.org/)
+- [Seaborn](https://seaborn.pydata.org/)
+- [Plotly](https://plotly.com/)
+- [NLTK](https://www.nltk.org/)
+- [Jupyter notebbok/lab](https://jupyter.org/)
+- [conda](https://docs.conda.io/en/latest/miniconda.html)
+- [mamba](https://github.com/mamba-org/mamba)
+- [pip](https://pip.pypa.io/en/stable/installation/)
+- ...
 
 ## Requirements
 1. [Docker](https://docs.docker.com/engine/install/)
@@ -24,6 +40,9 @@ Or a JupyterLab server
 docker run --gpus all --rm -it -h dockerdl -p 8888:8888 ghcr.io/matifali/dockerdl:main
 jupyter lab --no-browser --port 8888 --ServerApp.token='' --ip='*'
 ```
+### Connect
+
+Connect by opening http://localhost:8888 in your browser.
 
 ## Build your own
 
@@ -35,7 +54,7 @@ git clone https://github.com/matifali/DockerDL.git
 
 ### Add or delete packages
 
-modify `[Dockerfile](https://github.com/matifali/DockerDL/blob/main/Dockerfile)` to add or delete packages.
+modify [`Dockerfile`](Dockerfile) to add or delete packages.
 
 ### Build
 ```console
