@@ -17,7 +17,13 @@ on:
   pull_request:
     branches: [ "main" ]
     paths:
-      - '**.Dockerfile'
+      - 'Dockerfile'
+      
+
+concurrency:
+  group: ci-tests-${{ github.ref }}-1
+  cancel-in-progress: true
+
 
 env:
   # Use docker.io for Docker Hub if empty
