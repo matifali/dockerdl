@@ -7,17 +7,18 @@ name: Docker
 
 on:
   schedule:
+    # Runs at 00:10 am every Monday
     - cron: '10 0 * * 1'
   push:
     branches: [ "main" ]
-    paths:
-      - 'Dockerfile'
+    paths-ignore:
+      - '**.md'
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ "main" ]
-    paths:
-      - 'Dockerfile'
+    paths-ignore:
+      - '**.md'
       
 
 concurrency:
