@@ -19,12 +19,11 @@ List of Packages insatlled:
 - [conda](https://docs.conda.io/en/latest/miniconda.html)
 - [mamba](https://github.com/mamba-org/mamba)
 - [pip](https://pip.pypa.io/en/stable/installation/)
-- ...
 
 ## Requirements
 1. [Docker](https://docs.docker.com/engine/install/)
 2. [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
-
+3. Linux OS [^2]
 ## Fast Start
 ```console
 docker run --gpus all --rm -it -h dockerdl ghcr.io/matifali/dockerdl:main bash
@@ -87,3 +86,4 @@ If you find any issue please feel free to create an [issue](https://github.com/m
 * Help the flood victims in Pakistan by donating [here](https://alkhidmat.org/)
 
 [^1]: mamba is a faster conda package manager
+[^2]: This is for Linux but can be used with Windows too with a bit of extra effort. Check https://docs.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers
