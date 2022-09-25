@@ -10,6 +10,8 @@ USER root
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
 # miniconda path
 ENV CONDA_DIR /opt/miniconda
+# conda path
+ENV PATH=${CONDA_DIR}/bin:$PATH
 # Install dependencies
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG USERNAME=coder
@@ -51,24 +53,22 @@ RUN apt-get update && \
     echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd && \
     # Allow running conda as the new user
     groupadd conda && chgrp -R conda ${CONDA_DIR} && chmod 755 -R ${CONDA_DIR} && adduser ${USERNAME} conda && \
-    echo ". $CONDA_DIR/etc/profile.d/conda.sh" >> /home/${USERNAME}/.profile
-# Put conda in path so we can use conda activate
-ENV PATH=${CONDA_DIR}/bin:$PATH
+    echo ". $CONDA_DIR/etc/profile.d/conda.sh" >> /home/${USERNAME}/.profile && \
+    # Update conda
+    conda update --name base --channel conda-forge conda && \
+    # Install mamba
+    conda install mamba -n base -c conda-forge && \
+    # clean up
+    conda clean --all --yes
 # Python version
 ARG PYTHON_VER=3.10
 # Change to your user
 USER ${USERNAME}
 # Chnage Workdir
 WORKDIR /home/${USERNAME}
-# initialize and update conda
-RUN conda init bash && \
-    source /home/${USERNAME}/.bashrc && \
-    conda update --name base --channel conda-forge conda && \
-    conda install mamba -n base -c conda-forge && \
-    # clean up
-    conda clean --all --yes
 # Create deep-learning environment
-RUN mamba init && \
+RUN conda init bash && \
+    mamba init && \
     source /home/${USERNAME}/.bashrc && \
     mamba create --name DL --channel conda-forge python=${PYTHON_VER} --yes && \
     mamba clean --all --yes && \
