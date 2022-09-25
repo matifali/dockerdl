@@ -69,6 +69,8 @@ Following `--build-arg` are available:
 | UBUNTU_VER | Ubuntu version     | 22.04   | 22.04, 20.04, 18.04       |
 | TF_VERSION | TensorFlow version | latest  | any version from Pypi[^3] |
 
+> Note: **Not all combinations of `--build-arg` are tested.**
+
 #### Example 1
 Build an image with default settings and your own username and user id
 ```console
@@ -96,20 +98,17 @@ docker build -t dockerdl:latest /
 ```console
 docker run --gpus all --rm -it -h dockerdl dockerdl:latest bash
 ```
-[^1]: [mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamba.html) is a fast, drop-in replacement for the conda package manager. It is written in C++ and uses the same package format as conda. It is designed to be a drop-in replacement for conda, and can be used as a drop-in replacement for the conda command line client.
-
-[^2]: This image is based on [nvidia/cuda](https://hub.docker.com/r/nvidia/cuda) and uses [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to access the GPU. This means that it only works on Linux OS.
-
-[^3]: [PyPI](https://pypi.org/) is the Python Package Index. It is a repository of software for the Python programming language.
-
 # Other options
 
 ## Jetbrains PyCharm Professional
 Follow the instructions [here](https://www.jetbrains.com/help/pycharm/docker.html).
 ## VS Code
 1. install [vscode](https://code.visualstudio.com/Download)
-2. Install [Docker extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
-3. Install [Python exntension](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+2. Install [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) extension
+3. Install [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) extension
+4. install [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension
+5. Follow the instructions [here](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container).
+   
 ## Issues
 
 If you find any issue please feel free to create an [issue](https://github.com/matifali/DockerDL/issues/new/choose) and submit a PR.
@@ -119,5 +118,7 @@ If you find any issue please feel free to create an [issue](https://github.com/m
 * Please give a star (⭐) if using this has helped you.
 * Help the flood victims in Pakistan by donating [here](https://alkhidmat.org/)
 
-[^1]: mamba is a faster conda package manager
-[^2]: This is for Linux but can be used with Windows too with a bit of extra effort. Check https://docs.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers
+
+[^1]: [mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamba.html) is a fast, drop-in replacement for the conda package manager. It is written in C++ and uses the same package format as conda. It is designed to be a drop-in replacement for conda, and can be used as a drop-in replacement for the conda command line client.
+[^2]: This image is based on [nvidia/cuda](https://hub.docker.com/r/nvidia/cuda) and uses [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to access the GPU.
+[^3]: [PyPI](https://pypi.org/) is the Python Package Index. It is a repository of software for the Python programming language.
