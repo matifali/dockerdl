@@ -1,5 +1,4 @@
-# DockerDL [![Docker](https://github.com/matifali/DockerDL/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/matifali/DockerDL/actions/workflows/docker-publish.yml)
-
+# DockerDL [![Docker Build](https://github.com/matifali/dockerdl/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/matifali/dockerdl/actions/workflows/docker-publish.yml)
 Deep Learning Docker Image
 
 Don't waste time on setting up a deep learning env while you can get a deep learning environmnet with everything pre-insatlled.
@@ -26,17 +25,17 @@ List of Packages insatlled:
 3. Linux OS [^2]
 ## Fast Start
 ```console
-docker run --gpus all --rm -it -h dockerdl ghcr.io/matifali/dockerdl:main bash
+docker run --gpus all --rm -it -h dockerdl matifali/dockerdl bash
 ```
 Optionally launch a Jupyter notebook server
 ```console
-docker run --gpus all --rm -it -h dockerdl -p 8888:8888 ghcr.io/matifali/dockerdl:main 
+docker run --gpus all --rm -it -h dockerdl -p 8888:8888 matifali/dockerdl
 jupyter notebook --no-browser --port 8888 --NotebookApp.token='' --ip='*'
 ```
 
 Or a JupyterLab server
 ```console
-docker run --gpus all --rm -it -h dockerdl -p 8888:8888 ghcr.io/matifali/dockerdl:main
+docker run --gpus all --rm -it -h dockerdl -p 8888:8888 matifali/dockerdl
 jupyter lab --no-browser --port 8888 --ServerApp.token='' --ip='*'
 ```
 ### Connect
