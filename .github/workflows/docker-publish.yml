@@ -77,8 +77,10 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:latest
-            ghcr.io/${{ github.actor }}/${{ github.repository }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}
+            ghcr.io/${{ github.actor }}/${{ github.repository }}
+          tags: |
+            type=raw, value=latest
             
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
