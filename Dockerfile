@@ -1,17 +1,15 @@
 # Build argumnets
 ARG CUDA_VER=11.7
 ARG UBUNTU_VER=22.04
-
 # Download the base image
-FROM nvidia/cuda:${CUDA_VER}.1-devel-ubuntu${UBUNTU_VER} 
+FROM nvidia/cuda:${CUDA_VER}.1-cudnn8-runtime-ubuntu${UBUNTU_VER}
 # you can check for all available images at https://hub.docker.com/r/nvidia/cuda/tags
-
 # Install as root
 USER root
-
 # Shell
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
-
+# miniconda path
+ENV CONDA_DIR /opt/miniconda
 # Install dependencies
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG USERNAME=coder
@@ -24,23 +22,25 @@ RUN apt-get update && \
     bash \
     bash-completion \
     ca-certificates \
-    cmake \
     curl \
     git \
     htop \
-    libcudnn8 \
-    libopenblas-dev \
-    linux-headers-$(uname -r) \
     nano \
     openssh-client \
-    python3 python3-dev python3-pip python-is-python3 \
     sudo \
     unzip \
     vim \
-    wget && \
+    wget \ 
+    zip && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    # Install miniconda
+    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
+    /bin/bash miniconda.sh -b -p ${CONDA_DIR} && \
+    rm -rf miniconda.sh && \
+    # Enable conda autocomplete
+    sudo wget --quiet https://github.com/tartansandal/conda-bash-completion/raw/master/conda -P /etc/bash_completion.d/ && \
     # Add a user `${USERNAME}` so that you're not developing as the `root` user
     groupadd -g ${GROUPID} ${USERNAME} && \
     useradd ${USERNAME} \
@@ -48,75 +48,59 @@ RUN apt-get update && \
     --uid ${USERID} \
     --gid ${GROUPID} \
     --shell=/bin/bash && \
-    echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
-    
+    echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd && \
+    # Allow running conda as the new user
+    groupadd conda && chgrp -R conda ${CONDA_DIR} && chmod 755 -R ${CONDA_DIR} && adduser ${USERNAME} conda && \
+    echo ". $CONDA_DIR/etc/profile.d/conda.sh" >> /home/${USERNAME}/.profile
+# Put conda in path so we can use conda activate
+ENV PATH=${CONDA_DIR}/bin:$PATH
+# Python version
+ARG PYTHON_VER=3.10
 # Change to your user
 USER ${USERNAME}
-
 # Chnage Workdir
 WORKDIR /home/${USERNAME}
-
-# Put conda in path so we can use conda activate
-ENV PATH=/home/${USERNAME}/miniconda/bin:$PATH
-
-# Install miniconda
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /home/${USERNAME}/miniconda.sh && \
-    /bin/bash /home/${USERNAME}/miniconda.sh -b -p /home/${USERNAME}/miniconda && \
-    rm -rf /home/${USERNAME}/miniconda.sh && \
-    echo ". /home/${USERNAME}/miniconda/etc/profile.d/conda.sh" >> /home/${USERNAME}/.profile && \
-    # Initialize and update conda
-    conda init bash && \
-    # Enable bash-completion
-    sudo wget --quiet https://github.com/tartansandal/conda-bash-completion/raw/master/conda -P /etc/bash_completion.d/ && \
-    # Create deep-learning environment
-    conda install mamba -n base -c conda-forge && \
-    mamba init && \
+# initialize and update conda
+RUN conda init bash && \
     source /home/${USERNAME}/.bashrc && \
-    mamba update --name base --channel conda-forge conda && \
-    mamba create --name DL --channel conda-forge python=3.10 --yes && \
-    mamba clean -a -y && \
+    conda update --name base --channel conda-forge conda && \
+    conda install mamba -n base -c conda-forge && \
+    # clean up
+    conda clean --all --yes
+# Create deep-learning environment
+RUN mamba init && \
+    source /home/${USERNAME}/.bashrc && \
+    mamba create --name DL --channel conda-forge python=${PYTHON_VER} --yes && \
+    mamba clean --all --yes && \
     # Make new shells activate the DL environment:
     echo "# Make new shells activate the DL environment" >> /home/${USERNAME}/.bashrc && \
     echo "conda activate DL" >> /home/${USERNAME}/.bashrc
-    
-# Set --build-arg TF_PACKAGE_VERSION=1.11.0rc0 to install a specific version.
-# Installs the latest version by default.
-ARG TF_PACKAGE_VERSION=
-
-# Set --build--arg PYTORCH_PIP_URL=https://download.pytorch.org/whl/cu116 to install a specefic version
-# installs the latest availble version by default
-ARG PYTORCH_PIP_URL=https://download.pytorch.org/whl/cu116
-
+# Tensorflow Package version passed as build argument e.g. --build-arg TF_VERSION=2.9.2
+# A blank value will install the latest version
+ARG TF_VERSION=
 # Install packages inside the new environment
 RUN conda activate DL && \	
     PIP_INSTALL="pip install --upgrade --no-cache-dir" && \
     $PIP_INSTALL pip && \
-    $PIP_INSTALL pybind11 scikit-build && \
-    $PIP_INSTALL torch torchvision torchaudio torchtext --extra-index-url ${PYTORCH_PIP_URL} && \
+    $PIP_INSTALL torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116 && \
     $PIP_INSTALL \
-    Cython \
-    intel-openmp \
     ipywidgets \
     jupyterlab \
     matplotlib \
-    mkl \
     nltk \
     notebook \
     numpy \
     pandas \
     Pillow \
     plotly \
-    pytest \
     PyYAML \
     scipy \
     scikit-image \
     scikit-learn \
     sympy \
     seaborn \
-    tensorflow${TF_PACKAGE_VERSION:+==${TF_PACKAGE_VERSION}} \
-    tqdm \
-    wheel \
-    && \
+    tensorflow${TF_VERSION:+==${TF_VERSION}} \
+    tqdm && \
     pip cache purge && \
     # Set path of python packages
     echo "# Set path of python packages" >> /home/${USERNAME}/.bashrc && \
