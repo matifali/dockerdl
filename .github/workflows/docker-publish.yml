@@ -52,6 +52,20 @@ jobs:
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            matifali/dockerdl
+            ghcr.io/matifali/dockerdl
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=schedule
+            type=sha
+            type=raw,value=latest
+      
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ghcr.io
@@ -78,9 +92,8 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
