@@ -1,4 +1,4 @@
-name: Docker
+name: Build and push to registry
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -77,10 +77,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/${{ github.actor }}/${{ github.repository }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}
-          tags: |
-            type=raw, value=latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:latest
+            ghcr.io/${{ github.actor }}/${{ github.repository }}:latest
             
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
