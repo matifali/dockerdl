@@ -18,9 +18,7 @@ ARG USERNAME=coder
 ARG USERID=1000
 ARG GROUPID=1000
 RUN apt-get update && \
-    apt-get upgrade -y && \
-    APT_INSTALL="apt-get install -y --no-install-recommends" && \
-    $APT_INSTALL \
+    apt-get install -y --no-install-recommends \
     bash \
     bash-completion \
     ca-certificates \
@@ -36,16 +34,18 @@ RUN apt-get update && \
     zip && \
     apt-get autoremove -y && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    # Install miniconda
-    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install miniconda
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
     /bin/bash miniconda.sh -b -p ${CONDA_DIR} && \
     rm -rf miniconda.sh && \
     # Enable conda autocomplete
-    sudo wget --quiet https://github.com/tartansandal/conda-bash-completion/raw/master/conda -P /etc/bash_completion.d/ && \
-    # Add a user `${USERNAME}` so that you're not developing as the `root` user
-    groupadd -g ${GROUPID} ${USERNAME} && \
-    useradd ${USERNAME} \
+    sudo wget --quiet https://github.com/tartansandal/conda-bash-completion/raw/master/conda -P /etc/bash_completion.d/
+
+# Add a user `${USERNAME}` so that you're not developing as the `root` user
+RUN useradd ${USERNAME} \
+    --uid=1000 \
     --create-home \
     --uid ${USERID} \
     --gid ${GROUPID} \
@@ -68,7 +68,7 @@ USER ${USERNAME}
 WORKDIR /home/${USERNAME}
 # Create deep-learning environment
 RUN conda init bash && \
-    mamba init && \
+    mamba init bash && \
     source /home/${USERNAME}/.bashrc && \
     mamba create --name DL --channel conda-forge python=${PYTHON_VER} --yes && \
     mamba clean --all --yes && \
@@ -80,10 +80,9 @@ RUN conda init bash && \
 ARG TF_VERSION=
 # Install packages inside the new environment
 RUN conda activate DL && \	
-    PIP_INSTALL="pip install --upgrade --no-cache-dir" && \
-    $PIP_INSTALL pip && \
-    $PIP_INSTALL torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116 && \
-    $PIP_INSTALL \
+    pip install --upgrade --no-cache-dir pip && \
+    pip install --upgrade --no-cache-dir torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116 && \
+    pip install --upgrade --no-cache-dir \
     ipywidgets \
     jupyterlab \
     matplotlib \
