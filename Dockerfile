@@ -44,7 +44,8 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
     sudo wget --quiet https://github.com/tartansandal/conda-bash-completion/raw/master/conda -P /etc/bash_completion.d/
 
 # Add a user `${USERNAME}` so that you're not developing as the `root` user
-RUN useradd ${USERNAME} \
+RUN groupadd -g ${GROUPID} ${USERNAME} && \
+    useradd ${USERNAME} \
     --uid=1000 \
     --create-home \
     --uid ${USERID} \
