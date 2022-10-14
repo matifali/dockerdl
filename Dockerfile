@@ -55,10 +55,8 @@ RUN groupadd -g ${GROUPID} ${USERNAME} && \
     # Allow running conda as the new user
     groupadd conda && chgrp -R conda ${CONDA_DIR} && chmod 755 -R ${CONDA_DIR} && adduser ${USERNAME} conda && \
     echo ". $CONDA_DIR/etc/profile.d/conda.sh" >> /home/${USERNAME}/.profile && \
-    # Update conda
-    conda update --name base --channel conda-forge conda && \
     # Install mamba
-    conda install mamba -n base -c conda-forge && \
+    conda install mamba=0.25.0 -n base -c conda-forge && \
     # clean up
     conda clean --all --yes
 # Python version
