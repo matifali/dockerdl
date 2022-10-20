@@ -4,7 +4,7 @@ Deep Learning Docker Image
 Don't waste time on setting up a deep learning env while you can get a deep learning environment with everything pre-installed.
 This image uses **[mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamba.html)**[^1] to create an environment named **DL** and then install most of the packages using pip.
 
-List of Packages insatlled:
+## List of Packages installed:
 - [TensorFlow](https://www.tensorflow.org/)
 - [PyTorch](https://pytorch.org/)
 - [Numpy](https://numpy.org/)
@@ -14,10 +14,17 @@ List of Packages insatlled:
 - [Seaborn](https://seaborn.pydata.org/)
 - [Plotly](https://plotly.com/)
 - [NLTK](https://www.nltk.org/)
-- [Jupyter notebbok/lab](https://jupyter.org/)
-- [conda](https://docs.conda.io/en/latest/miniconda.html) or no conda
+- [Jupyter notebook/lab](https://jupyter.org/)
+- [conda](https://docs.conda.io/en/latest/miniconda.html)
 - [mamba](https://github.com/mamba-org/mamba)
 - [pip](https://pip.pypa.io/en/stable/installation/)
+
+## Image variants and tags
+
+- `conda` - everything installed
+- `no-conda` - everything installed except conda and mamba
+- `pytorch` - only pytorch installed (no tensorflow)
+- `tensorflow` - only tensorflow installed (no pytorch) 
 
 ## Requirements
 1. [Docker](https://docs.docker.com/engine/install/)
