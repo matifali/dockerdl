@@ -73,8 +73,6 @@ jobs:
             ghcr.io/matifali/dockerdl
           # generate Docker tags based on the following events/attributes
           tags: |
-            type=schedule
-            type=sha
             type=raw,value=${{ matrix.tag }}
       
       # Login against a Docker registry except on PR
