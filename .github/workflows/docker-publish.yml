@@ -36,7 +36,14 @@ jobs:
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
-
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerfile: ./conda.Dockerfile
+            tag: conda
+          - dockerfile: ./noconda.Dockerfile
+            tag: noconda
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -64,7 +71,7 @@ jobs:
           tags: |
             type=schedule
             type=sha
-            type=raw,value=latest
+            type=raw,value=${{ matrix.tag }}
       
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
