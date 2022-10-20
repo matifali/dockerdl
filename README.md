@@ -24,12 +24,12 @@ This image uses **[mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamb
 ## Image variants and tags
 
 make a table of the variants and tags
-| Variant    | Tag          | conda              | pip                | pytorch            | tensorflow         |
-| ---------- | ------------ | ------------------ | ------------------ | ------------------ | ------------------ |
-| Conda      | `conda`      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| No Conda   | `no-conda`   | :x:                | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| PyTorch    | `pytorch`    | :x:                | :heavy_check_mark: | :heavy_check_mark: | :x:                |
-| Tensorflow | `tensorflow` | :x:                | :heavy_check_mark: | :x:                | :heavy_check_mark: |
+| Variant    | Tag          | conda              | pytorch            | tensorflow         |
+| ---------- | ------------ | ------------------ | ------------------ | ------------------ |
+| Conda      | `conda`      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| No Conda   | `no-conda`   | :x:                | :heavy_check_mark: | :heavy_check_mark: |
+| PyTorch    | `pytorch`    | :x:                | :heavy_check_mark: | :x:                |
+| Tensorflow | `tensorflow` | :x:                | :x:                | :heavy_check_mark: |
 
 ## Requirements
 
