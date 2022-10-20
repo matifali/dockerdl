@@ -1,8 +1,8 @@
 # Build argumnets
-ARG CUDA_VER=11.7
+ARG CUDA_VER=11.8.0
 ARG UBUNTU_VER=22.04
 # Download the base image
-FROM nvidia/cuda:${CUDA_VER}.1-cudnn8-runtime-ubuntu${UBUNTU_VER}
+FROM nvidia/cuda:${CUDA_VER}-cudnn8-runtime-ubuntu${UBUNTU_VER}
 # you can check for all available images at https://hub.docker.com/r/nvidia/cuda/tags
 # Install as root
 USER root
