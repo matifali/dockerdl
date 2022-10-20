@@ -8,7 +8,8 @@ FROM nvidia/cuda:${CUDA_VER}-cudnn8-runtime-ubuntu${UBUNTU_VER}
 USER root
 # Shell
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
-
+# Python version
+ARG PYTHON_VER=3.10
 # Install dependencies
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG USERNAME=coder
@@ -24,6 +25,7 @@ RUN apt-get update && \
     htop \
     nano \
     openssh-client \
+    python${PYTHON_VER} python${PYTHON_VER}-dev python3-pip pytho-is-python3 \
     sudo \
     unzip \
     vim \
@@ -46,14 +48,11 @@ RUN groupadd -g ${GROUPID} ${USERNAME} && \
 USER ${USERNAME}
 # Chnage Workdir
 WORKDIR /home/${USERNAME}
-# Create deep-learning environment
-# Python version
-ARG PYTHON_VER=3.10
 # Tensorflow Package version passed as build argument e.g. --build-arg TF_VERSION=2.9.2
 # A blank value will install the latest version
 ARG TF_VERSION=
 # Install packages inside the new environment
-RUN pip install --upgrade --no-cache-dir pip && \
+RUN pip install --upgrade --no-cache-dir pip setuptools wheel && \
     pip install --upgrade --no-cache-dir torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116 && \
     pip install --upgrade --no-cache-dir \
     ipywidgets \
