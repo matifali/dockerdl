@@ -1,7 +1,7 @@
 # DockerDL [![Docker Build](https://github.com/matifali/dockerdl/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/matifali/dockerdl/actions/workflows/docker-publish.yml)
 Deep Learning Docker Image
 
-Don't waste time on setting up a deep learning env while you can get a deep learning environmnet with everything pre-insatlled.
+Don't waste time on setting up a deep learning env while you can get a deep learning environment with everything pre-installed.
 This image uses **[mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamba.html)**[^1] to create an environment named **DL** and then install most of the packages using pip.
 
 List of Packages insatlled:
@@ -15,7 +15,7 @@ List of Packages insatlled:
 - [Plotly](https://plotly.com/)
 - [NLTK](https://www.nltk.org/)
 - [Jupyter notebbok/lab](https://jupyter.org/)
-- [conda](https://docs.conda.io/en/latest/miniconda.html)
+- [conda](https://docs.conda.io/en/latest/miniconda.html) or no conda
 - [mamba](https://github.com/mamba-org/mamba)
 - [pip](https://pip.pypa.io/en/stable/installation/)
 
@@ -25,17 +25,17 @@ List of Packages insatlled:
 3. Linux OS [^2]
 ## Fast Start
 ```console
-docker run --gpus all --rm -it -h dockerdl matifali/dockerdl bash
+docker run --gpus all --rm -it -h dockerdl matifali/dockerdl:conda bash
 ```
 Optionally launch a Jupyter notebook server
 ```console
-docker run --gpus all --rm -it -h dockerdl -p 8888:8888 matifali/dockerdl
+docker run --gpus all --rm -it -h dockerdl -p 8888:8888 matifali/dockerdl:conda
 jupyter notebook --no-browser --port 8888 --NotebookApp.token='' --ip='*'
 ```
 
-Or a JupyterLab server
+Or a JupyterLab server without conda
 ```console
-docker run --gpus all --rm -it -h dockerdl -p 8888:8888 matifali/dockerdl
+docker run --gpus all --rm -it -h dockerdl -p 8888:8888 matifali/dockerdl:noconda
 jupyter lab --no-browser --port 8888 --ServerApp.token='' --ip='*'
 ```
 ### Connect
@@ -47,7 +47,7 @@ Connect by opening http://localhost:8888 in your browser.
 ### Clone the repo
 
 ```console
-git clone https://github.com/matifali/DockerDL.git
+git clone https://github.com/matifali/dockerdl.git
 ```
 
 ### Add or delete packages
@@ -77,11 +77,10 @@ docker build -t dockerdl:latest /
 --build-arg USERNAME=$USER /
 --build-arg USERID=$(id -u $USER) /
 --build-arg GROUPID=$(id -g $USER) /
-.
+-f conda.Dockerfile .
 ```
 #### Example 2
-Build an image with Python 3.9, CUDA 11.5, Ubuntu 20.04 and TensorFlow 2.6.0
-```console
+Build an image with Python 3.9, TensorFlow 2.6.0, CUDA 11.5, Ubuntu 20.04 and without conda
 ```console
 docker build -t dockerdl:latest /
 --build-arg USERNAME=$USER /
@@ -91,7 +90,7 @@ docker build -t dockerdl:latest /
 --build-arg CUDA_VER=11.5 /
 --build-arg UBUNTU_VER=20.04 /
 --build-arg TF_VERSION=2.6.0 /
-.
+-f noconda.Dockerfile .
 ```
 ### Run
 ```console
