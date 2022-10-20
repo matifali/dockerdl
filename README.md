@@ -31,6 +31,8 @@ make a table of the variants and tags
 | PyTorch    | `pytorch`    | :x:                | :heavy_check_mark: | :x:                |
 | Tensorflow | `tensorflow` | :x:                | :x:                | :heavy_check_mark: |
 
+You can see the full list of tags [here](https://hub.docker.com/r/matifali/dockerdl/tags?page=1&ordering=last_updated).
+
 ## Requirements
 
 1. [Docker](https://docs.docker.com/engine/install/)
