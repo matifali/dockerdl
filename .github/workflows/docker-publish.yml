@@ -44,6 +44,10 @@ jobs:
             tag: conda
           - dockerfile: ./noconda.Dockerfile
             tag: noconda
+          - dockerfile: ./pytorch.Dockerfile
+            tag: pytorch
+          - dockerfile: ./tensorflow.Dockerfile
+            tag: tensorflow
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

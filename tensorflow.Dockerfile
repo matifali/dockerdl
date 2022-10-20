@@ -53,7 +53,6 @@ WORKDIR /home/${USERNAME}
 ARG TF_VERSION=
 # Install packages inside the new environment
 RUN pip install --upgrade --no-cache-dir pip setuptools wheel && \
-    pip install --upgrade --no-cache-dir torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116 && \
     pip install --upgrade --no-cache-dir \
     ipywidgets \
     jupyterlab \

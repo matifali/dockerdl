@@ -70,7 +70,6 @@ RUN pip install --upgrade --no-cache-dir pip setuptools wheel && \
     scikit-learn \
     sympy \
     seaborn \
-    tensorflow${TF_VERSION:+==${TF_VERSION}} \
     tqdm && \
     pip cache purge && \
     # Set path of python packages
