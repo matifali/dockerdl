@@ -42,8 +42,8 @@ jobs:
         include:
           - dockerfile: ./conda.Dockerfile
             tag: conda
-          - dockerfile: ./noconda.Dockerfile
-            tag: noconda
+          - dockerfile: ./no-conda.Dockerfile
+            tag: no-conda
           - dockerfile: ./pytorch.Dockerfile
             tag: pytorch
           - dockerfile: ./tensorflow.Dockerfile
