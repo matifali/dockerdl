@@ -36,8 +36,8 @@ You can see the full list of tags [here](https://hub.docker.com/r/matifali/docke
 ## Requirements
 
 1. [Docker](https://docs.docker.com/engine/install/)
-2. [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
-3. Linux or WSL2 [^2]
+2. [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) [^2]
+3. Linux, MacOS, or [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
 
 ## Fast Start
 
