@@ -37,7 +37,7 @@ You can see the full list of tags [here](https://hub.docker.com/r/matifali/docke
 
 1. [Docker](https://docs.docker.com/engine/install/)
 2. [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
-3. Linux OS [^2]
+3. Linux or WSL2 [^2]
 
 ## Fast Start
 
