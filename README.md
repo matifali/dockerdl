@@ -1,4 +1,4 @@
-# DockerDL [![Docker Build](https://github.com/matifali/dockerdl/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/matifali/dockerdl/actions/workflows/docker-publish.yml)
+# DockerDL [![Docker Build](https://github.com/matifali/dockerdl/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/matifali/dockerdl/actions/workflows/docker-publish.yml) ![Docker Pulls](https://img.shields.io/docker/pulls/matifali/dockerdl)
 
 Deep Learning Docker Image
 
@@ -23,7 +23,7 @@ This image uses **[mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamb
 
 ## Image variants and tags
 
-make a table of the variants and tags
+Make a table of the variants and tags
 | Variant    | Tag          | conda              | pytorch            | tensorflow         |
 | ---------- | ------------ | ------------------ | ------------------ | ------------------ |
 | Conda      | `conda`      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
@@ -71,7 +71,7 @@ git clone https://github.com/matifali/dockerdl.git
 
 ### Add or delete packages
 
-modify [`Dockerfile`](Dockerfile) to add or delete packages.
+Modify [`Dockerfile`](Dockerfile) to add or delete packages.
 
 ### Build
 
