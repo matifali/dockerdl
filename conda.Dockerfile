@@ -80,7 +80,7 @@ ARG TF_VERSION=
 # Install packages inside the new environment
 RUN conda activate DL && \	
 pip install --upgrade --no-cache-dir pip && \
-pip install --upgrade --no-cache-dir torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu117 && \
+pip install --upgrade --no-cache-dir torch torchvision torchaudio && \
 pip install --upgrade --no-cache-dir \
 ipywidgets \
 jupyterlab \
