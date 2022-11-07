@@ -23,7 +23,6 @@ This image uses **[mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamb
 
 ## Image variants and tags
 
-Make a table of the variants and tags
 | Variant    | Tag          | conda              | pytorch            | tensorflow         |
 | ---------- | ------------ | ------------------ | ------------------ | ------------------ |
 | Conda      | `conda`      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
@@ -42,7 +41,7 @@ You can see the full list of tags [here](https://hub.docker.com/r/matifali/docke
 ## Fast Start
 
 ```console
-docker run --gpus all --rm -it -h dockerdl matifali/dockerdl:conda bash
+docker run --gpus all --rm -it -h dockerdl matifali/dockerdl:no-conda bash
 ```
 
 Optionally launch a Jupyter notebook server
