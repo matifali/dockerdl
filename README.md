@@ -23,12 +23,12 @@ This image uses **[mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamb
 
 ## Image variants and tags
 
-| Variant    | Tag          | conda              | pytorch            | tensorflow         |
-| ---------- | ------------ | ------------------ | ------------------ | ------------------ |
-| Conda      | `conda`      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| No Conda   | `no-conda`   | :x:                | :heavy_check_mark: | :heavy_check_mark: |
-| PyTorch    | `pytorch`    | :x:                | :heavy_check_mark: | :x:                |
-| Tensorflow | `tensorflow` | :x:                | :x:                | :heavy_check_mark: |
+| Variant    | Tag          | Conda              | PyTorch            | TensorFlow         | Image size |
+| ---------- | ------------ | ------------------ | ------------------ | ------------------ | ---------- |
+| Conda      | `conda`      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/conda) |
+| No Conda   | `no-conda`   | :x:                | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/no-conda) |
+| PyTorch    | `pytorch`    | :x:                | :heavy_check_mark: | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/pytorch) |
+| Tensorflow | `tensorflow` | :x:                | :x:                | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/tensorflow) |
 
 You can see the full list of tags [here](https://hub.docker.com/r/matifali/dockerdl/tags?page=1&ordering=last_updated).
 
