@@ -25,12 +25,12 @@ This image uses **[mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamb
 
 | Variant    | Tag          | Conda              | PyTorch            | TensorFlow         | Image size |
 | ---------- | ------------ | ------------------ | ------------------ | ------------------ | ---------- |
-| Conda      | `conda`      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/conda) |
-| No Conda   | `no-conda`   | :x:                | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/no-conda) |
-| PyTorch    | `pytorch`    | :x:                | :heavy_check_mark: | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/pytorch) |
-| Tensorflow | `tensorflow` | :x:                | :x:                | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/tensorflow) |
+| Conda      | `conda`      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/conda?style=for-the-badge&label=) |
+| No Conda   | `no-conda`   | :x:                | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/no-conda?style=for-the-badge&label=) |
+| PyTorch    | `pytorch`    | :x:                | :heavy_check_mark: | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/pytorch?style=for-the-badge&label=) |
+| Tensorflow | `tensorflow` | :x:                | :x:                | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/tensorflow?style=for-the-badge&label=) |
 
-You can see the full list of tags [here](https://hub.docker.com/r/matifali/dockerdl/tags?page=1&ordering=last_updated).
+You can see the full list of tags [https://hub.docker.com/r/matifali/dockerdl/tags](https://hub.docker.com/r/matifali/dockerdl/tags?page=1&ordering=last_updated).
 
 ## Requirements
 
