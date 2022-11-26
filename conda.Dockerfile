@@ -23,24 +23,24 @@ ARG USERID=1000
 ARG GROUPID=1000
 
 # Install dependencies
-RUN apt-get update && \
-apt-get install -y --no-install-recommends \
-bash \
-bash-completion \
-ca-certificates \
-curl \
-git \
-htop \
-nano \
-openssh-client \
-sudo \
-unzip \
-vim \
-wget \ 
-zip && \
-apt-get autoremove -y && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash \
+    bash-completion \
+    ca-certificates \
+    curl \
+    git \
+    htop \
+    nano \
+    openssh-client \
+    sudo \
+    tmux \
+    unzip \
+    vim \
+    wget \ 
+    zip && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install miniconda
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \

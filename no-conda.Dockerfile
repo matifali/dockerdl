@@ -15,25 +15,25 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ARG USERNAME=coder
 ARG USERID=1000
 ARG GROUPID=1000
-RUN apt-get update && \
-apt-get install -y --no-install-recommends \
-bash \
-bash-completion \
-ca-certificates \
-curl \
-git \
-htop \
-nano \
-openssh-client \
-python${PYTHON_VER} python${PYTHON_VER}-dev python3-pip python-is-python3 \
-sudo \
-unzip \
-vim \
-wget \ 
-zip && \
-apt-get autoremove -y && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash \
+    bash-completion \
+    ca-certificates \
+    curl \
+    git \
+    htop \
+    nano \
+    openssh-client \
+    python${PYTHON_VER} python${PYTHON_VER}-dev python3-pip python-is-python3 \
+    sudo \
+    tmux \
+    unzip \
+    vim \
+    wget \ 
+    zip && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Add a user `${USERNAME}` so that you're not developing as the `root` user
 RUN groupadd -g ${GROUPID} ${USERNAME} && \
 useradd ${USERNAME} \
