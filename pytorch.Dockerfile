@@ -34,10 +34,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install Microsoft's code-server
+RUN wget -O- https://aka.ms/install-vscode-server/setup.sh | sh
+# Expose port 8000 for code-server
+EXPOSE 8000
+
 # Add a user `${USERNAME}` so that you're not developing as the `root` user
 RUN groupadd -g ${GROUPID} ${USERNAME} && \
     useradd ${USERNAME} \
-    --uid=1000 \
     --create-home \
     --uid ${USERID} \
     --gid ${GROUPID} \
@@ -75,8 +80,3 @@ RUN pip install --upgrade --no-cache-dir pip setuptools wheel && \
     # Set path of python packages
     echo "# Set path of python packages" >>/home/${USERNAME}/.bashrc && \
     echo 'export PATH=$HOME/.local/bin:$PATH' >>/home/${USERNAME}/.bashrc
-
-# Install Microsoft's code-server
-RUN wget -O- https://aka.ms/install-vscode-server/setup.sh | sh
-# Expose port 8000 for code-server
-EXPOSE 8000

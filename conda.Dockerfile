@@ -42,6 +42,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Install Microsoft's code-server
+RUN wget -O- https://aka.ms/install-vscode-server/setup.sh | sh
+# Expose port 8000 for code-server
+EXPOSE 8000
+
 # Install miniconda
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
     /bin/bash miniconda.sh -b -p ${CONDA_DIR} && \
@@ -52,7 +57,6 @@ sudo wget --quiet https://github.com/tartansandal/conda-bash-completion/raw/mast
 # Add a user `${USERNAME}` so that you're not developing as the `root` user
 RUN groupadd -g ${GROUPID} ${USERNAME} && \
     useradd ${USERNAME} \
-    --uid=1000 \
     --create-home \
     --uid ${USERID} \
     --gid ${GROUPID} \
@@ -117,8 +121,3 @@ RUN conda activate DL && \
     # Set path of python packages
     echo "# Set path of python packages" >>/home/${USERNAME}/.bashrc && \
     echo 'export PATH=$HOME/.local/bin:$PATH' >>/home/${USERNAME}/.bashrc
-
-# Install Microsoft's code-server
-RUN wget -O- https://aka.ms/install-vscode-server/setup.sh | sh
-# Expose port 8000 for code-server
-EXPOSE 8000
