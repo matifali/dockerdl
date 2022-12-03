@@ -19,7 +19,6 @@ This image uses **[mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamb
 - [Jupyter notebook/lab](https://jupyter.org/)
 - [conda](https://docs.conda.io/en/latest/miniconda.html)
 - [mamba](https://github.com/mamba-org/mamba)
-- [pip](https://pip.pypa.io/en/stable/installation/)
 
 ## Image variants and tags
 
@@ -89,7 +88,7 @@ Following `--build-arg` are available:
 | USERID     | User ID            | 1000    | `$(id -u $USER)`          |
 | GROUPID    | Group ID           | 1000    | `$(id -g $USER)`          |
 | PYTHON_VER | Python version     | 3.10    | 3.10, 3.9, 3.8            |
-| CUDA_VER   | CUDA version       | 11.7    | 11.7, 11.5, 11.4          |
+| CUDA_VER   | CUDA version       | 11.7.1  | 11.7.0, 11.8.0 etc.       |
 | UBUNTU_VER | Ubuntu version     | 22.04   | 22.04, 20.04, 18.04       |
 | TF_VERSION | TensorFlow version | latest  | any version from Pypi[^3] |
 
@@ -109,7 +108,7 @@ docker build -t dockerdl:latest /
 
 #### Example 2
 
-Build an image with Python 3.9, TensorFlow 2.6.0, CUDA 11.5, Ubuntu 20.04 and without conda
+Build an image with Python 3.9, TensorFlow 2.6.0, CUDA 11.5.0, Ubuntu 20.04 and without conda
 
 ```console
 docker build -t dockerdl:latest /
@@ -117,7 +116,7 @@ docker build -t dockerdl:latest /
 --build-arg USERID=$(id -u $USER) /
 --build-arg GROUPID=$(id -g $USER) /
 --build-arg PYTHON_VER=3.9 /
---build-arg CUDA_VER=11.5 /
+--build-arg CUDA_VER=11.5.0 /
 --build-arg UBUNTU_VER=20.04 /
 --build-arg TF_VERSION=2.6.0 /
 -f noconda.Dockerfile .
@@ -154,4 +153,3 @@ If you find any issue please feel free to create an [issue](https://github.com/m
 
 [^1]: [mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamba.html) is a fast, drop-in replacement for the conda package manager. It is written in C++ and uses the same package format as conda. It is designed to be a drop-in replacement for conda, and can be used as a drop-in replacement for the conda command line client.
 [^2]: This image is based on [nvidia/cuda](https://hub.docker.com/r/nvidia/cuda) and uses [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to access the GPU.
-[^3]: [PyPI](https://pypi.org/) is the Python Package Index. It is a repository of software for the Python programming language.
