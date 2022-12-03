@@ -75,3 +75,8 @@ RUN pip install --upgrade --no-cache-dir pip setuptools wheel && \
     # Set path of python packages
     echo "# Set path of python packages" >> /home/${USERNAME}/.bashrc && \
     echo 'export PATH=$HOME/.local/bin:$PATH' >> /home/${USERNAME}/.bashrc
+
+# Install Microsoft's code-server
+RUN wget -O- https://aka.ms/install-vscode-server/setup.sh | sh
+# Expose port 8000 for code-server
+EXPOSE 8000

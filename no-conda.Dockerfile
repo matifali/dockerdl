@@ -36,13 +36,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Add a user `${USERNAME}` so that you're not developing as the `root` user
 RUN groupadd -g ${GROUPID} ${USERNAME} && \
-useradd ${USERNAME} \
---uid=1000 \
---create-home \
---uid ${USERID} \
---gid ${GROUPID} \
---shell=/bin/bash && \
-echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd
+    useradd ${USERNAME} \
+    --uid=1000 \
+    --create-home \
+    --uid ${USERID} \
+    --gid ${GROUPID} \
+    --shell=/bin/bash && \
+    echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd
 
 # Change to your user
 USER ${USERNAME}
@@ -53,26 +53,31 @@ WORKDIR /home/${USERNAME}
 ARG TF_VERSION=
 # Install packages inside the new environment
 RUN pip install --upgrade --no-cache-dir pip setuptools wheel && \
-pip install --upgrade --no-cache-dir torch torchvision torchaudio && \
-pip install --upgrade --no-cache-dir \
-ipywidgets \
-jupyterlab \
-matplotlib \
-nltk \
-notebook \
-numpy \
-pandas \
-Pillow \
-plotly \
-PyYAML \
-scipy \
-scikit-image \
-scikit-learn \
-sympy \
-seaborn \
-tensorflow${TF_VERSION:+==${TF_VERSION}} \
-tqdm && \
-pip cache purge && \
-# Set path of python packages
-echo "# Set path of python packages" >>/home/${USERNAME}/.bashrc && \
-echo 'export PATH=$HOME/.local/bin:$PATH' >>/home/${USERNAME}/.bashrc
+    pip install --upgrade --no-cache-dir torch torchvision torchaudio && \
+    pip install --upgrade --no-cache-dir \
+    ipywidgets \
+    jupyterlab \
+    matplotlib \
+    nltk \
+    notebook \
+    numpy \
+    pandas \
+    Pillow \
+    plotly \
+    PyYAML \
+    scipy \
+    scikit-image \
+    scikit-learn \
+    sympy \
+    seaborn \
+    tensorflow${TF_VERSION:+==${TF_VERSION}} \
+    tqdm && \
+    pip cache purge && \
+    # Set path of python packages
+    echo "# Set path of python packages" >>/home/${USERNAME}/.bashrc && \
+    echo 'export PATH=$HOME/.local/bin:$PATH' >>/home/${USERNAME}/.bashrc
+
+# Install Microsoft's code-server
+RUN wget -O- https://aka.ms/install-vscode-server/setup.sh | sh
+# Expose port 8000 for code-server
+EXPOSE 8000

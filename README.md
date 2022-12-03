@@ -44,14 +44,21 @@ You can see the full list of tags [https://hub.docker.com/r/matifali/dockerdl/ta
 docker run --gpus all --rm -it -h dockerdl matifali/dockerdl:no-conda bash
 ```
 
-Optionally launch a Jupyter notebook server
+### Launch a vscode server
+
+```console
+docker run --gpus all --rm -it -h dockerdl -p 8000:8000 matifali/dockerdl:no-conda code-server --accept-server-license-terms serve-local --without-connection-token --quality stable --telemetry-level off
+```
+Connect to the server using your browser at [http://localhost:8000](http://localhost:8000)
+
+### Launch a Jupyter notebook server
 
 ```console
 docker run --gpus all --rm -it -h dockerdl -p 8888:8888 matifali/dockerdl:conda
 jupyter notebook --no-browser --port 8888 --NotebookApp.token='' --ip='*'
 ```
 
-Or a JupyterLab server without conda
+### JupyterLab server without conda
 
 ```console
 docker run --gpus all --rm -it -h dockerdl -p 8888:8888 matifali/dockerdl:noconda
