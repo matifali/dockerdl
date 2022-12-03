@@ -77,7 +77,7 @@ git clone https://github.com/matifali/dockerdl.git
 
 ### Add or delete packages
 
-Modify [`Dockerfile`](Dockerfile) to add or delete packages.
+Modify the corresponding [`Dockerfile`] to add or delete packages.
 
 ### Build
 
