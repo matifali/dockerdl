@@ -41,8 +41,8 @@ jobs:
             tag: no-conda
           - dockerfile: ./pytorch.Dockerfile
             tag: pytorch
-          - dockerfile: ./pytorch-lightning.Dockerfile
-            tag: pytorch-lightning
+          - dockerfile: ./pytorch-nightly.Dockerfile
+            tag: pytorch-nightly
           - dockerfile: ./tensorflow.Dockerfile
             tag: tensorflow
     steps:
