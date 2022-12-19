@@ -68,9 +68,11 @@ jobs:
           images: |
             matifali/dockerdl
           # ghcr.io/matifali/dockerdl
-          # generate Docker tags based on the matrix values and add latest tag to no-conda image
+          # generate Docker tags based on the matrix values also add latest tag if matrix.tag == 'no-conda'
           tags: |
             type=raw,value=${{ matrix.tag }}
+            type=raw,value=latest,enable=${{ matrix.tag == 'no-conda' }}
+
           # create labels for the image
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.clone_url }}
@@ -114,16 +116,16 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Add latest tag to no-conda image
-      - name: Add latest tag to no-conda image
-        if: github.event_name != 'pull_request' && matrix.tag == 'no-conda'
-        run: |
-          docker pull matifali/dockerdl:no-conda
-          docker tag matifali/dockerdl:no-conda matifali/dockerdl:latest
-          docker push matifali/dockerdl:latest
-          docker pull ghcr.io/matifali/dockerdl:no-conda
-          docker tag ghcr.io/matifali/dockerdl:no-conda ghcr.io/matifali/dockerdl:latest
-          docker push ghcr.io/matifali/dockerdl:latest
+      # # Add latest tag to no-conda image
+      # - name: Add latest tag to no-conda image
+      #   if: github.event_name != 'pull_request' && matrix.tag == 'no-conda'
+      #   run: |
+      #     docker pull matifali/dockerdl:no-conda
+      #     docker tag matifali/dockerdl:no-conda matifali/dockerdl:latest
+      #     docker push matifali/dockerdl:latest
+      #     docker pull ghcr.io/matifali/dockerdl:no-conda
+      #     docker tag ghcr.io/matifali/dockerdl:no-conda ghcr.io/matifali/dockerdl:latest
+      #     docker push ghcr.io/matifali/dockerdl:latest
 
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
