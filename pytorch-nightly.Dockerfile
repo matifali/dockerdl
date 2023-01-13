@@ -9,18 +9,12 @@ USER root
 # Shell
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
 # Python version
-ARG PYTHON_VER=3.11
+ARG PYTHON_VER=3.10
 # Install dependencies
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG USERNAME=coder
 ARG USERID=1000
 ARG GROUPID=1000
-RUN add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends software-properties-common && \
-    apt-get autoremove -y && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bash \
@@ -60,9 +54,6 @@ RUN groupadd -g ${GROUPID} ${USERNAME} && \
 USER ${USERNAME}
 # Chnage Workdir
 WORKDIR /home/${USERNAME}
-# Tensorflow Package version passed as build argument e.g. --build-arg TF_VERSION=2.9.2
-# A blank value will install the latest version
-ARG TF_VERSION=
 # Install packages inside the new environment
 RUN pip install --upgrade --no-cache-dir pip setuptools wheel && \
     pip install --upgrade --no-cache-dir --pre torch torchvision torchaudio torchtext --force-reinstall --extra-index-url https://download.pytorch.org/whl/nightly/cu117 && \
