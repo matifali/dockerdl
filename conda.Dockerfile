@@ -1,5 +1,6 @@
 FROM matifali/dockerdl:conda-base
 
+ARG PYTHON_VER=3.10
 # Change to your user
 USER 1000
 
