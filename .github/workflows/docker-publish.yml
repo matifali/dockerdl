@@ -35,10 +35,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./conda.Dockerfile
-            tag: conda
           - dockerfile: ./conda-base.Dockerfile
             tag: conda-base
+          - dockerfile: ./conda.Dockerfile
+            tag: conda
           - dockerfile: ./no-conda.Dockerfile
             tag: no-conda
           - dockerfile: ./pytorch.Dockerfile
