@@ -63,7 +63,8 @@ RUN groupadd -g ${GROUPID} ${USERNAME} && \
     --shell=/bin/bash && \
     echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd && \
     # Allow running conda as the new user
-    groupadd conda && chgrp -R conda ${CONDA_DIR} && chmod 755 -R ${CONDA_DIR} && adduser ${USERNAME} conda && \
+#     groupadd conda && chgrp -R conda ${CONDA_DIR} && chmod 775 -R ${CONDA_DIR} && adduser ${USERNAME} conda && \
+    chown -R ${USERID}:${GROUPID} ${CONDA_DIR} && \
     echo ". $CONDA_DIR/etc/profile.d/conda.sh" >>/home/${USERNAME}/.profile && \
     # Install mamba
     conda install mamba -n base -c conda-forge && \
