@@ -37,6 +37,8 @@ jobs:
         include:
           - dockerfile: ./conda.Dockerfile
             tag: conda
+          - dockerfile: ./conda-base.Dockerfile
+            tag: conda-base
           - dockerfile: ./no-conda.Dockerfile
             tag: no-conda
           - dockerfile: ./pytorch.Dockerfile
