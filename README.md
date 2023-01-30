@@ -23,6 +23,7 @@ Don't waste time on setting up a deep learning environment while you can get a d
 
 | Variant    | Tag          | Conda              | PyTorch            | TensorFlow         | Image size |
 | ---------- | ------------ | ------------------ | ------------------ | ------------------ | ---------- |
+| Conda Base     | `conda-base`      | :heavy_check_mark: | :x: | :x: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/conda-base?style=for-the-badge&label=) |
 | Conda      | `conda`      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/conda?style=for-the-badge&label=) |
 | No Conda   | `no-conda`, `latest`  | :x:                | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/no-conda?style=for-the-badge&label=) |
 | PyTorch    | `pytorch`    | :x:                | :heavy_check_mark: | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/pytorch?style=for-the-badge&label=) |
