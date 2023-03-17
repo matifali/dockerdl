@@ -51,14 +51,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Install the cosign tool except on PR
-      # https://github.com/sigstore/cosign-installer
-      - name: Install cosign
-        if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@main
-        with:
-          cosign-release: "v1.13.1"
-
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v2
 
@@ -98,3 +90,13 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Update Readme on dockerhub
+        if: github.event_name != 'pull_request'
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: matifali/dockerdl
+          short-description: ${{ github.event.repository.description }}
+          readme-filepath: README.md
