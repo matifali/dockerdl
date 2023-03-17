@@ -21,14 +21,14 @@ Don't waste time on setting up a deep learning environment while you can get a d
 
 ## Image variants and tags
 
-| Variant    | Tag          | Conda              | PyTorch            | TensorFlow         | Image size |
-| ---------- | ------------ | ------------------ | ------------------ | ------------------ | ---------- |
-| Conda Base | `conda-base` | :heavy_check_mark: | :x: | :x: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/conda-base?style=for-the-badge&label=) |
-| Tensorflow | `tensorflow` | :x:                | :x:                | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/tensorflow?style=for-the-badge&label=) |
-| PyTorch    | `pytorch`    | :x:                | :heavy_check_mark: | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/pytorch?style=for-the-badge&label=) |
-| PyTorch Nightly | `pytorch-nightly` | :x:                | :heavy_check_mark: | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/pytorch-nightly?style=for-the-badge&label=) |
-| PyTorch + Tensorflow | `no-conda`, `latest` | :x:                | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/no-conda?style=for-the-badge&label=) |
-| PyTorch + Tensorflow + Conda | `conda` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/conda?style=for-the-badge&label=) |
+| Variant                      | Tag                  | Conda              | PyTorch            | TensorFlow         | Image size                                                                                                                        |
+| ---------------------------- | -------------------- | ------------------ | ------------------ | ------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| Conda                        | `conda`              | :heavy_check_mark: | :x:                | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/conda-base?style=for-the-badge&label=)      |
+| Tensorflow                   | `tf`                 | :x:                | :x:                | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/tensorflow?style=for-the-badge&label=)      |
+| PyTorch                      | `torch`              | :x:                | :heavy_check_mark: | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/pytorch?style=for-the-badge&label=)         |
+| PyTorch Nightly              | `torch-nightly`      | :x:                | :heavy_check_mark: | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/pytorch-nightly?style=for-the-badge&label=) |
+| PyTorch + Tensorflow         | `tf-torch`, `latest` | :x:                | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/no-conda?style=for-the-badge&label=)        |
+| PyTorch + Tensorflow + Conda | `tf-torch-conda`     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/conda?style=for-the-badge&label=)           |
 
 You can see the full list of tags [https://hub.docker.com/r/matifali/dockerdl/tags](https://hub.docker.com/r/matifali/dockerdl/tags?page=1&ordering=last_updated).
 
@@ -88,7 +88,7 @@ Following `--build-arg` are available:
 | USERID     | User ID            | 1000    | `$(id -u $USER)`          |
 | GROUPID    | Group ID           | 1000    | `$(id -g $USER)`          |
 | PYTHON_VER | Python version     | 3.10    | 3.10, 3.9, 3.8            |
-| CUDA_VER   | CUDA version       | 11.7.1  | 11.7.0, 11.8.0 etc.       |
+| CUDA_VER   | CUDA version       | 11.8.0  | 11.7.0, 11.8.0 etc.       |
 | UBUNTU_VER | Ubuntu version     | 22.04   | 22.04, 20.04, 18.04       |
 | TF_VERSION | TensorFlow version | latest  | any version from Pypi[^3] |
 

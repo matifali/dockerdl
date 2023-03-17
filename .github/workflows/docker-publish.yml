@@ -35,18 +35,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./conda-base.Dockerfile
-            tag: conda-base
           - dockerfile: ./conda.Dockerfile
             tag: conda
-          - dockerfile: ./no-conda.Dockerfile
-            tag: no-conda
-          - dockerfile: ./pytorch.Dockerfile
-            tag: pytorch
-          - dockerfile: ./pytorch-nightly.Dockerfile
-            tag: pytorch-nightly
-          - dockerfile: ./tensorflow.Dockerfile
-            tag: tensorflow
+          - dockerfile: ./tf-torch-conda.Dockerfile
+            tag: tf-torch-conda
+          - dockerfile: ./tf-torch.Dockerfile
+            tag: tf-torch
+          - dockerfile: ./torch.Dockerfile
+            tag: torch
+          - dockerfile: ./torch-nightly.Dockerfile
+            tag: torch-nightly
+          - dockerfile: ./tf.Dockerfile
+            tag: tf
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -66,16 +66,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          # list of Docker images to use as base name for tags
           images: |
             matifali/dockerdl
-          # ghcr.io/matifali/dockerdl
-          # generate Docker tags based on the matrix values also add latest tag if matrix.tag == 'no-conda'
           tags: |
             type=raw,value=${{ matrix.tag }}
-            type=raw,value=latest,enable=${{ matrix.tag == 'no-conda' }}
-
-          # create labels for the image
+            type=raw,value=latest,enable=${{ matrix.tag == 'tf-torch' }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.clone_url }}
             org.opencontainers.image.revision=${{ github.sha }}
@@ -85,18 +80,6 @@ jobs:
             org.opencontainers.image.url=${{ github.event.repository.html_url }}
             org.opencontainers.image.licenses=${{ github.event.repository.license.spdx_id }}
             org.opencontainers.image.authors=${{ github.event.repository.owner.login }}
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      # - name: Log into registry ghcr.io
-      #   if: github.event_name != 'pull_request'
-      #   uses: docker/login-action@v2
-      #   with:
-      #     registry: ghcr.io
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Login to DockerHub
       - name: Login to DockerHub
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
@@ -104,8 +87,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v4
@@ -117,37 +98,3 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      # # Add latest tag to no-conda image
-      # - name: Add latest tag to no-conda image
-      #   if: github.event_name != 'pull_request' && matrix.tag == 'no-conda'
-      #   run: |
-      #     docker pull matifali/dockerdl:no-conda
-      #     docker tag matifali/dockerdl:no-conda matifali/dockerdl:latest
-      #     docker push matifali/dockerdl:latest
-      #     docker pull ghcr.io/matifali/dockerdl:no-conda
-      #     docker tag ghcr.io/matifali/dockerdl:no-conda ghcr.io/matifali/dockerdl:latest
-      #     docker push ghcr.io/matifali/dockerdl:latest
-
-      # Sign the resulting Docker image digest except on PRs.
-      # This will only write to the public Rekor transparency log when the Docker
-      # repository is public to avoid leaking data.  If you would like to publish
-      # transparency data even for private images, pass --force to cosign below.
-      # https://github.com/sigstore/cosign
-      - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          COSIGN_EXPERIMENTAL: "true"
-        # This step uses the identity token to provision an ephemeral certificate
-        # against the sigstore community Fulcio instance.
-        run: |
-          cosign sign \
-          matifali/dockerdl:${{ matrix.tag }}
-
-      - name: Verify the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          COSIGN_EXPERIMENTAL: "true"
-        run: |
-          cosign verify \
-          matifali/dockerdl:${{ matrix.tag }}
