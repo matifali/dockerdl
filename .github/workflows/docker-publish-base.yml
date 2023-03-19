@@ -7,6 +7,10 @@ on:
     branches: ["main"]
     paths:
       - "base.Dockerfile"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "base.Dockerfile"
 
 concurrency:
   group: ci-tests-${{ github.ref }}-1
