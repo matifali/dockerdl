@@ -16,6 +16,11 @@ on:
       - "**.md"
       - "base.Dockerfile"
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Build and push dockerdl-base image"]
+    branches: ["main"]
+    types:
+      - completed
 
 concurrency:
   group: dockerdl-${{ github.ref }}
