@@ -11,6 +11,7 @@ on:
     branches: ["main"]
     paths:
       - "base.Dockerfile"
+  workflow_dispatch:
 
 concurrency:
   group: ci-tests-${{ github.ref }}-1
