@@ -5,16 +5,16 @@ on:
     - cron: "10 0 * * 1"
   push:
     branches: ["main"]
-    paths-ignore:
-      - "**.md"
-      - "base.Dockerfile"
+    paths:
+      - "**.Dockerfile"
+      - "**.yml"
     # Publish semver tags as releases.
     tags: ["v*.*.*"]
   pull_request:
     branches: ["main"]
-    paths-ignore:
-      - "**.md"
-      - "base.Dockerfile"
+    paths:
+      - "**.Dockerfile"
+      - "**.yml"
   workflow_dispatch:
   workflow_run:
     workflows: ["Build and push dockerdl-base image"]
