@@ -15,7 +15,7 @@ Don't waste time on setting up a deep learning environment while you can get a d
 - [Seaborn](https://seaborn.pydata.org/)
 - [Plotly](https://plotly.com/)
 - [NLTK](https://www.nltk.org/)
-- [Jupyter notebook/lab](https://jupyter.org/)
+- [Jupyter lab](https://jupyter.org/)
 - [conda](https://docs.conda.io/en/latest/miniconda.html)
 - [mamba](https://github.com/mamba-org/mamba) (faster than conda) [^1]
 
@@ -46,31 +46,25 @@ docker run --gpus all --rm -it -h dockerdl matifali/dockerdl bash
 
 ### Launch a vscode server
 
-```console
+```shell
 docker run --gpus all --rm -it -h dockerdl -p 8000:8000 matifali/dockerdl code-server --accept-server-license-terms serve-local --without-connection-token --quality stable --telemetry-level off
 ```
 
 Connect to the server using your browser at [http://localhost:8000](http://localhost:8000).
 
-### Launch a Jupyter notebook server
-
-```console
-docker run --gpus all --rm -it -h dockerdl -p 8888:8888 matifali/dockerdl jupyter notebook --no-browser --port 8888 --NotebookApp.token='' --ip='*'
-```
-
 ### JupyterLab server without conda
 
-```console
+```shell
 docker run --gpus all --rm -it -h dockerdl -p 8888:8888 matifali/dockerdl jupyter lab --no-browser --port 8888 --ServerApp.token='' --ip='*'
 ```
 
 Connect by opening <http://localhost:8888> in your browser.
 
-## Build your own
+## Customize the image
 
 ### Clone the repo
 
-```console
+```shell
 git clone https://github.com/matifali/dockerdl.git
 ```
 
@@ -78,48 +72,43 @@ git clone https://github.com/matifali/dockerdl.git
 
 Modify the corresponding [`Dockerfile`] to add or delete packages.
 
+> You may have to rebuild the `dockerdl-base` if you are are building a custom image and then use it as a base image. See [Build](#build) section.
+
 ### Build
 
-Following `--build-arg` are available:
+Following `--build-arg` are available for `dockerdl-base` image.
 
-| Argument   | Description        | Default | Possible Values           |
-| ---------- | ------------------ | ------- | ------------------------- |
-| USERNAME   | User name          | coder   | Any string or `$USER`     |
-| USERID     | User ID            | 1000    | `$(id -u $USER)`          |
-| GROUPID    | Group ID           | 1000    | `$(id -g $USER)`          |
-| PYTHON_VER | Python version     | 3.10    | 3.10, 3.9, 3.8            |
-| CUDA_VER   | CUDA version       | 11.8.0  | 11.7.0, 11.8.0 etc.       |
-| UBUNTU_VER | Ubuntu version     | 22.04   | 22.04, 20.04, 18.04       |
-| TF_VERSION | TensorFlow version | latest  | any version from Pypi[^3] |
+| Argument   | Description    | Default | Possible Values       |
+| ---------- | -------------- | ------- | --------------------- |
+| USERNAME   | User name      | coder   | Any string or `$USER` |
+| USERID     | User ID        | 1000    | `$(id -u $USER)`      |
+| GROUPID    | Group ID       | 1000    | `$(id -g $USER)`      |
+| PYTHON_VER | Python version | 3.10    | 3.10, 3.9, 3.8        |
+| CUDA_VER   | CUDA version   | 11.8.0  | 11.7.0, 11.8.0 etc.   |
+| UBUNTU_VER | Ubuntu version | 22.04   | 22.04, 20.04, 18.04   |
 
 > Note: **Not all combinations of `--build-arg` are tested.**
 
-#### Example 1
+#### Step 1
 
-Build an image with default settings and your own username and user id.
+Build the base image
 
-```console
-docker build -t dockerdl:latest /
---build-arg USERNAME=$USER /
---build-arg USERID=$(id -u $USER) /
---build-arg GROUPID=$(id -g $USER) /
--f conda.Dockerfile .
+```shell
+docker build -t dockerdl-base:latest --build-arg USERNAME=coder --build-arg USERID=1000 --build-arg GROUPID=1000 --build-arg PYTHON_VER=3.10 --build-arg CUDA_VER=11.8.0 --build-arg UBUNTU_VER=22.04 -f base.Dockerfile .
 ```
 
-#### Example 2
+#### Step 2
 
-Build an image with Python 3.8, TensorFlow 2.6.0, CUDA 11.5.0, Ubuntu 20.04 and no:conda
+Build the image you want with the base image as the base image.
 
-```console
-docker build -t dockerdl:latest /
---build-arg USERNAME=$USER /
---build-arg USERID=$(id -u $USER) /
---build-arg GROUPID=$(id -g $USER) /
---build-arg PYTHON_VER=3.8 /
---build-arg CUDA_VER=11.5.0 /
---build-arg UBUNTU_VER=20.04 /
---build-arg TF_VERSION=2.6.0 /
--f noconda.Dockerfile .
+```shell
+docker build -t dockerdl:latest --build-arg TF_VERSION=2.8.0 -f tf.Dockerfile .
+```
+
+or
+
+```shell
+docker build -t dockerdl:latest --build-arg -f torch.Dockerfile .
 ```
 
 ## How to connect
@@ -135,6 +124,11 @@ Follow the instructions [here](https://www.jetbrains.com/help/pycharm/docker.htm
 3. Install [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) extension.
 4. install [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension.
 5. Follow the instructions [here](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container).
+
+### Coder
+
+1. Install Coder. (<https://github.com/coder/coder>).
+2. Use my deeplearning template. (<https://github.com/matifali/coder-templates/tree/main/deeplearning>).
 
 ## Issues
 
