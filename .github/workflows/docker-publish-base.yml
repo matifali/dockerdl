@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ci-tests-${{ github.ref }}-1
+  group: dockerdl-base-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
