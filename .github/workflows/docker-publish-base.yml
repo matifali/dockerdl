@@ -1,25 +1,11 @@
-name: Docker Build
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
+name: Build and push dockerdl-base image
 on:
   schedule:
-    # Runs at 00:10 am every Monday
-    - cron: "10 0 * * 1"
+    # Runs at 00:10 am every Sunday
+    - cron: "10 0 * * 0"
   push:
     branches: ["main"]
-    paths-ignore:
-      - "**.md"
-      - "base.Dockerfile"
-    # Publish semver tags as releases.
-    tags: ["v*.*.*"]
-  pull_request:
-    branches: ["main"]
-    paths-ignore:
-      - "**.md"
+    paths:
       - "base.Dockerfile"
 
 concurrency:
@@ -33,22 +19,6 @@ jobs:
       contents: read
       packages: write
       id-token: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - dockerfile: ./conda.Dockerfile
-            tag: conda
-          - dockerfile: ./tf-torch-conda.Dockerfile
-            tag: tf-torch-conda
-          - dockerfile: ./tf-torch.Dockerfile
-            tag: tf-torch
-          - dockerfile: ./torch.Dockerfile
-            tag: torch
-          - dockerfile: ./torch-nightly.Dockerfile
-            tag: torch-nightly
-          - dockerfile: ./tf.Dockerfile
-            tag: tf
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -56,15 +26,14 @@ jobs:
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Docker meta
+      - name: Docker metadata
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: |
-            matifali/dockerdl
+            matifali/dockerdl-base
           tags: |
-            type=raw,value=${{ matrix.tag }}
-            type=raw,value=latest,enable=${{ matrix.tag == 'tf-torch' }}
+            type=raw,value=latest
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.clone_url }}
             org.opencontainers.image.revision=${{ github.sha }}
@@ -74,6 +43,7 @@ jobs:
             org.opencontainers.image.url=${{ github.event.repository.html_url }}
             org.opencontainers.image.licenses=${{ github.event.repository.license.spdx_id }}
             org.opencontainers.image.authors=${{ github.event.repository.owner.login }}
+
       - name: Login to DockerHub
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
@@ -86,7 +56,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ${{ matrix.dockerfile }}
+          file: 
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
