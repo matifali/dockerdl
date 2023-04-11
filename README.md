@@ -21,14 +21,14 @@ Don't waste time on setting up a deep learning environment while you can get a d
 
 ## Image variants and tags
 
-| Variant                      | Tag                  | Conda              | PyTorch            | TensorFlow         | Image size                                                                                                                        |
-| ---------------------------- | -------------------- | ------------------ | ------------------ | ------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| Conda                        | `conda`              | :heavy_check_mark: | :x:                | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/conda?style=for-the-badge&label=)      |
-| Tensorflow                   | `tf`                 | :x:                | :x:                | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/tf?style=for-the-badge&label=)      |
-| PyTorch                      | `torch`              | :x:                | :heavy_check_mark: | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/torch?style=for-the-badge&label=)         |
-| PyTorch Nightly              | `torch-nightly`      | :x:                | :heavy_check_mark: | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/torch-nightly?style=for-the-badge&label=) |
-| PyTorch + Tensorflow         | `tf-torch`, `latest` | :x:                | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/tf-torch?style=for-the-badge&label=)        |
-| PyTorch + Tensorflow + Conda | `tf-torch-conda`     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/tf-torch-conda?style=for-the-badge&label=)           |
+| Variant                      | Tag                  | Conda              | PyTorch            | TensorFlow         | Image size                                                                                                                       |
+| ---------------------------- | -------------------- | ------------------ | ------------------ | ------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| Conda                        | `conda`              | :heavy_check_mark: | :x:                | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/conda?style=for-the-badge&label=)          |
+| Tensorflow                   | `tf`                 | :x:                | :x:                | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/tf?style=for-the-badge&label=)             |
+| PyTorch                      | `torch`              | :x:                | :heavy_check_mark: | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/torch?style=for-the-badge&label=)          |
+| PyTorch Nightly              | `torch-nightly`      | :x:                | :heavy_check_mark: | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/torch-nightly?style=for-the-badge&label=)  |
+| PyTorch + Tensorflow         | `tf-torch`, `latest` | :x:                | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/tf-torch?style=for-the-badge&label=)       |
+| PyTorch + Tensorflow + Conda | `tf-torch-conda`     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/tf-torch-conda?style=for-the-badge&label=) |
 
 You can see the full list of tags [https://hub.docker.com/r/matifali/dockerdl/tags](https://hub.docker.com/r/matifali/dockerdl/tags?page=1&ordering=last_updated).
 
@@ -84,7 +84,7 @@ Following `--build-arg` are available for `dockerdl-base` image.
 | USERID     | User ID        | 1000    | `$(id -u $USER)`      |
 | GROUPID    | Group ID       | 1000    | `$(id -g $USER)`      |
 | PYTHON_VER | Python version | 3.10    | 3.10, 3.9, 3.8        |
-| CUDA_VER   | CUDA version   | 11.8.0  | 11.7.0, 11.8.0 etc.   |
+| CUDA_VER   | CUDA version   | 12.0.1  | 11.7.0, 11.8.0 etc.   |
 | UBUNTU_VER | Ubuntu version | 22.04   | 22.04, 20.04, 18.04   |
 
 > Note: **Not all combinations of `--build-arg` are tested.**
@@ -94,7 +94,7 @@ Following `--build-arg` are available for `dockerdl-base` image.
 Build the base image
 
 ```shell
-docker build -t dockerdl-base:latest --build-arg USERNAME=coder --build-arg USERID=1000 --build-arg GROUPID=1000 --build-arg PYTHON_VER=3.10 --build-arg CUDA_VER=11.8.0 --build-arg UBUNTU_VER=22.04 -f base.Dockerfile .
+docker build -t dockerdl-base:latest --build-arg USERNAME=coder --build-arg USERID=1000 --build-arg GROUPID=1000 --build-arg PYTHON_VER=3.10 --build-arg CUDA_VER=12.0.1 --build-arg UBUNTU_VER=22.04 -f base.Dockerfile .
 ```
 
 #### Step 2
@@ -128,7 +128,7 @@ Follow the instructions [here](https://www.jetbrains.com/help/pycharm/docker.htm
 ### Coder
 
 1. Install Coder. (<https://github.com/coder/coder>).
-2. Use my deeplearning template. (<https://github.com/matifali/coder-templates/tree/main/deeplearning>).
+2. Use deeplearning template which references these images (<https://github.com/matifali/coder-templates/tree/main/deeplearning>).
 
 ## Issues
 
@@ -136,7 +136,7 @@ If you find any issue please feel free to create an [issue](https://github.com/m
 
 ## Support
 
-- Please give a star (⭐) if using this has helped you.
+- Give a star (⭐) if using this has helped you.
 - Help the flood victims in Pakistan by donating [here](https://alkhidmat.org/).
 
 ## References

@@ -1,5 +1,5 @@
 # Build argumnets
-ARG CUDA_VER=11.8.0
+ARG CUDA_VER=12.0.1
 ARG UBUNTU_VER=22.04
 # Download the base image
 FROM nvidia/cuda:${CUDA_VER}-cudnn8-runtime-ubuntu${UBUNTU_VER}
@@ -40,12 +40,12 @@ EXPOSE 8000
 
 # Add a user `${USERNAME}` so that you're not developing as the `root` user
 RUN groupadd -g ${GROUPID} ${USERNAME} && \
-useradd ${USERNAME} \
+    useradd ${USERNAME} \
     --create-home \
     --uid ${USERID} \
     --gid ${GROUPID} \
     --shell=/bin/bash && \
-echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd
+    echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd
 
 # Change to your user
 USER ${USERNAME}

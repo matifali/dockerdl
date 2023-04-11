@@ -1,5 +1,5 @@
 # Build argumnets
-ARG CUDA_VER=11.8.0
+ARG CUDA_VER=12.0.1
 ARG UBUNTU_VER=22.04
 # Download the base image
 FROM nvidia/cuda:${CUDA_VER}-cudnn8-runtime-ubuntu${UBUNTU_VER}
@@ -51,8 +51,8 @@ EXPOSE 8000
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
     /bin/bash miniconda.sh -b -p ${CONDA_DIR} && \
     rm -rf miniconda.sh && \
-# Enable conda autocomplete
-sudo wget --quiet https://github.com/tartansandal/conda-bash-completion/raw/master/conda -P /etc/bash_completion.d/
+    # Enable conda autocomplete
+    sudo wget --quiet https://github.com/tartansandal/conda-bash-completion/raw/master/conda -P /etc/bash_completion.d/
 
 # Add a user `${USERNAME}` so that you're not developing as the `root` user
 RUN groupadd -g ${GROUPID} ${USERNAME} && \
@@ -63,7 +63,7 @@ RUN groupadd -g ${GROUPID} ${USERNAME} && \
     --shell=/bin/bash && \
     echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd && \
     # Allow running conda as the new user
-#     groupadd conda && chgrp -R conda ${CONDA_DIR} && chmod 775 -R ${CONDA_DIR} && adduser ${USERNAME} conda && \
+    #     groupadd conda && chgrp -R conda ${CONDA_DIR} && chmod 775 -R ${CONDA_DIR} && adduser ${USERNAME} conda && \
     chown -R ${USERID}:${GROUPID} ${CONDA_DIR} && \
     echo ". $CONDA_DIR/etc/profile.d/conda.sh" >>/home/${USERNAME}/.profile && \
     # Install mamba
