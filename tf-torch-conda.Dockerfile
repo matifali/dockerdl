@@ -22,10 +22,11 @@ ARG TF_VERSION=
 
 # Install packages inside the new environment
 RUN conda activate DL && pip install --upgrade --no-cache-dir pip && \
-    pip install --upgrade --no-cache-dir torch torchvision torchaudio torchtext lightning && \
+    pip install --upgrade --no-cache-dir torch torchvision torchaudio torchtext --index-url https://download.pytorch.org/whl/cu118 && \
     pip install --upgrade --no-cache-dir \
     ipywidgets \
     jupyterlab \
+    lightning \
     matplotlib \
     nltk \
     numpy \
