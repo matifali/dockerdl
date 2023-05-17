@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     htop \
     nano \
+    nvidia-modprobe \
     openssh-client \
     sudo \
     tmux \

@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     htop \
     nano \
+    nvidia-modprobe \
     openssh-client \
     python${PYTHON_VER} python${PYTHON_VER}-dev python3-pip python-is-python3 \
     sudo \
