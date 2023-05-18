@@ -84,7 +84,7 @@ Following `--build-arg` are available for `dockerdl-base` image.
 | USERID     | User ID        | 1000    | `$(id -u $USER)`      |
 | GROUPID    | Group ID       | 1000    | `$(id -g $USER)`      |
 | PYTHON_VER | Python version | 3.10    | 3.10, 3.9, 3.8        |
-| CUDA_VER   | CUDA version   | 12.0.1  | 11.7.0, 11.8.0 etc.   |
+| CUDA_VER   | CUDA version   | 12.1.1  | 11.7.0, 11.8.0 etc.   |
 | UBUNTU_VER | Ubuntu version | 22.04   | 22.04, 20.04, 18.04   |
 
 > Note: **Not all combinations of `--build-arg` are tested.**
@@ -94,7 +94,7 @@ Following `--build-arg` are available for `dockerdl-base` image.
 Build the base image
 
 ```shell
-docker build -t dockerdl-base:latest --build-arg USERNAME=coder --build-arg USERID=1000 --build-arg GROUPID=1000 --build-arg PYTHON_VER=3.10 --build-arg CUDA_VER=12.0.1 --build-arg UBUNTU_VER=22.04 -f base.Dockerfile .
+docker build -t dockerdl-base:latest --build-arg USERNAME=coder --build-arg USERID=1000 --build-arg GROUPID=1000 --build-arg PYTHON_VER=3.10 --build-arg CUDA_VER=12.1.1 --build-arg UBUNTU_VER=22.04 -f base.Dockerfile .
 ```
 
 #### Step 2
