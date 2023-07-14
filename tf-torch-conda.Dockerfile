@@ -7,13 +7,11 @@ USER 1000
 # Change Workdir
 WORKDIR ${HOME}
 
-# Initilize shell for conda/mamba
-RUN conda init bash && mamba init bash && source ${HOME}/.bashrc
-
 # Create deep-learning environment
-RUN mamba create --name DL --channel conda-forge python=${PYTHON_VER} --yes && mamba clean --all --yes && \
-    # Make new shells activate the DL environment:
-    echo "# Make new shells activate the DL environment" >>${HOME}/.bashrc && \
+RUN conda create --name DL --channel conda-forge python=${PYTHON_VER} --yes && conda clean --all --yes
+
+# Make new shells activate the DL environment:
+RUN echo "# Make new shells activate the DL environment" >>${HOME}/.bashrc && \
     echo "conda activate DL" >>${HOME}/.bashrc
 
 # Tensorflow Package version passed as build argument e.g. --build-arg TF_VERSION=2.9.2

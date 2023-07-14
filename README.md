@@ -17,7 +17,6 @@ Don't waste time on setting up a deep learning environment while you can get a d
 - [NLTK](https://www.nltk.org/)
 - [Jupyter lab](https://jupyter.org/)
 - [conda](https://docs.conda.io/en/latest/miniconda.html)
-- [mamba](https://github.com/mamba-org/mamba) (faster than conda) [^1]
 
 ## Image variants and tags
 
@@ -35,7 +34,7 @@ You can see the full list of tags [https://hub.docker.com/r/matifali/dockerdl/ta
 ## Requirements
 
 1. [Docker](https://docs.docker.com/engine/install/)
-2. [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) [^2]
+2. [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) [^1]
 3. Linux, or Windows with [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
 
 ## Fast Start
@@ -94,7 +93,7 @@ Following `--build-arg` are available for `dockerdl-base` image.
 Build the base image
 
 ```shell
-docker build -t dockerdl-base:latest --build-arg USERNAME=coder --build-arg USERID=1000 --build-arg GROUPID=1000 --build-arg PYTHON_VER=3.10 --build-arg CUDA_VER=12.1.1 --build-arg UBUNTU_VER=22.04 -f base.Dockerfile .
+docker build -t dockerdl-base:latest --build-arg USERNAME=coder --build-arg CUDA_VER=11.8.0 --build-arg UBUNTU_VER=22.04 -f base.Dockerfile .
 ```
 
 #### Step 2
@@ -102,13 +101,13 @@ docker build -t dockerdl-base:latest --build-arg USERNAME=coder --build-arg USER
 Build the image you want with the base image as the base image.
 
 ```shell
-docker build -t dockerdl:latest --build-arg TF_VERSION=2.8.0 -f tf.Dockerfile .
+docker build -t dockerdl:tf --build-arg TF_VERSION=2.12.0 -f tf.Dockerfile .
 ```
 
 or
 
 ```shell
-docker build -t dockerdl:latest --build-arg -f torch.Dockerfile .
+docker build -t dockerdl:torch --build-arg -f torch.Dockerfile .
 ```
 
 ## How to connect
@@ -141,6 +140,4 @@ If you find any issue please feel free to create an [issue](https://github.com/m
 
 ## References
 
-[^1]: [mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamba.html) is a fast, drop-in replacement for the conda package manager. It is written in C++ and uses the same package format as conda. It is designed to be a drop-in replacement for conda, and can be used as a drop-in replacement for the conda command line client.
-[^2]: This image is based on [nvidia/cuda](https://hub.docker.com/r/nvidia/cuda) and uses [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to access the GPU.
-[^3]: [Pypi](https://pypi.org) is the Python Package Index. It is a repository of software for the Python programming language.
+[^1]: This image is based on [nvidia/cuda](https://hub.docker.com/r/nvidia/cuda) and uses [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to access the GPU.

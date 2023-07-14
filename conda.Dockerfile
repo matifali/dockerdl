@@ -1,4 +1,4 @@
-# As a workaround use CUDA 11.8.0 as base image and install tensorflow untill
+# As a workaround use CUDA 11.8.0 as base image untill
 # tensorflow pip package is available for CUDA 12.x.x
 # https://github.com/tensorflow/tensorflow/issues/60691
 ARG CUDA_VER=11.8.0
@@ -63,11 +63,12 @@ RUN groupadd -g ${GROUPID} ${USERNAME} && \
     --gid ${GROUPID} \
     --shell=/bin/bash && \
     echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd && \
-    # Allow running conda as the new user
-    #     groupadd conda && chgrp -R conda ${CONDA_DIR} && chmod 775 -R ${CONDA_DIR} && adduser ${USERNAME} conda && \
     chown -R ${USERID}:${GROUPID} ${CONDA_DIR} && \
-    echo ". $CONDA_DIR/etc/profile.d/conda.sh" >>/home/${USERNAME}/.profile && \
-    # Install mamba
-    conda install mamba -n base -c conda-forge && \
-    # clean up
-    conda clean --all --yes
+    echo ". $CONDA_DIR/etc/profile.d/conda.sh" >>/home/${USERNAME}/.profile
+
+USER ${USERNAME}
+
+WORKDIR /home/${USERNAME}
+
+# Initilize shell for conda
+RUN conda init bash && source /home/${USERNAME}/.bashrc
