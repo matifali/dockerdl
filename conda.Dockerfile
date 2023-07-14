@@ -71,17 +71,3 @@ RUN groupadd -g ${GROUPID} ${USERNAME} && \
     conda install mamba -n base -c conda-forge && \
     # clean up
     conda clean --all --yes
-
-# Python version
-ARG PYTHON_VER=3.10
-
-# Change to your user
-USER ${USERNAME}
-
-# Chnage Workdir
-WORKDIR /home/${USERNAME}
-
-# Initilize shell for conda/mamba
-RUN conda init bash && \
-    mamba init bash && \
-    source /home/${USERNAME}/.bashrc
