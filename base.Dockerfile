@@ -34,8 +34,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zip && \
     apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install Microsoft's code-server
-RUN wget -O- https://aka.ms/install-vscode-server/setup.sh | sh
 # Expose port 8000 for code-server
 EXPOSE 8000
 

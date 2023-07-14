@@ -1,4 +1,7 @@
-FROM matifali/dockerdl-base:latest
+# As a workaround use CUDA 11.8.0 as base image and install tensorflow untill
+# tensorflow pip package is available for CUDA 12.x.x
+# https://github.com/tensorflow/tensorflow/issues/60691
+FROM matifali/dockerdl-base:11.8.0
 # Install as user 1000
 USER 1000
 # Shell
