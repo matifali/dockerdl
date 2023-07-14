@@ -7,10 +7,12 @@ on:
     branches: ["main"]
     paths:
       - "base.Dockerfile"
+      - ".github/workflows/docker-publish-base.yml"
   pull_request:
     branches: ["main"]
     paths:
       - "base.Dockerfile"
+      - ".github/workflows/docker-publish-base.yml"
   workflow_dispatch:
 
 concurrency:

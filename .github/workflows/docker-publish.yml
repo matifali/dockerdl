@@ -1,20 +1,17 @@
 name: Build and push dockerdl images
 on:
-  schedule:
-    # Runs at 00:10 am every Monday
-    - cron: "10 0 * * 1"
   push:
     branches: ["main"]
-    paths:
-      - "**.Dockerfile"
-      - "**.yml"
-    # Publish semver tags as releases.
-    tags: ["v*.*.*"]
+    paths-ignore:
+      - "base.Dockerfile"
+      - ".github/workflows/docker-publish-base.yml"
+      - "README.md"
   pull_request:
     branches: ["main"]
-    paths:
-      - "**.Dockerfile"
-      - "**.yml"
+    paths-ignore:
+      - "base.Dockerfile"
+      - ".github/workflows/docker-publish-base.yml"
+      - "README.md"
   workflow_dispatch:
   workflow_run:
     workflows: ["Build and push dockerdl-base image"]
