@@ -93,7 +93,7 @@ Following `--build-arg` are available for `dockerdl-base` image.
 Build the base image
 
 ```shell
-docker build -t dockerdl-base:latest --build-arg USERNAME=coder --build-arg CUDA_VER=11.8.0 --build-arg UBUNTU_VER=22.04 -f base.Dockerfile .
+docker build -t dockerdl-base:latest --build-arg USERNAME=coder --build-arg CUDA_VER=11.7.1 --build-arg UBUNTU_VER=22.04 -f base.Dockerfile .
 ```
 
 #### Step 2

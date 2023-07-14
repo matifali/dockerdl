@@ -1,7 +1,7 @@
-# As a workaround use CUDA 11.8.0 as base image untill
+# As a workaround use CUDA 11.7.1 as base image untill
 # tensorflow pip package is available for CUDA 12.x.x
 # https://github.com/tensorflow/tensorflow/issues/60691
-ARG CUDA_VER=11.8.0
+ARG CUDA_VER=11.7.1
 ARG UBUNTU_VER=22.04
 # Download the base image
 FROM nvidia/cuda:${CUDA_VER}-cudnn8-runtime-ubuntu${UBUNTU_VER}
