@@ -42,8 +42,6 @@ jobs:
             tag: tf-torch
           - dockerfile: ./torch.Dockerfile
             tag: torch
-          - dockerfile: ./torch-nightly.Dockerfile
-            tag: torch-nightly
           - dockerfile: ./tf.Dockerfile
             tag: tf
     steps:
