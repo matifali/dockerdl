@@ -91,3 +91,11 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: username/my-repo
+          event-type: depot
+          client-payload: '{"use": "${{ github.event_name == "workflow_dispatch" || github.event_name == "schedule" }}"}'
+
