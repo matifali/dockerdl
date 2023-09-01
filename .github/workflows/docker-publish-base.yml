@@ -108,7 +108,7 @@ jobs:
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
+          repository: matifali/dockerdl
           event-type: depot
           client-payload: '{"depot": "${{ env.depot }}"}'
 
