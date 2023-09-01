@@ -60,9 +60,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # - name: Setup Docker buildx
+      #   if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
       #   uses: docker/setup-buildx-action@v2
       
       # - name: Build and push Docker image
+      #   if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
       #   id: build-and-push
       #   uses: docker/build-push-action@v4
       #   with:
@@ -76,14 +78,16 @@ jobs:
       #     cache-to: type=gha,mode=max
 
       - name: Setup Depot
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
         uses: depot/setup-action@v1
       
       - name: Build and Push with Depot.dev
-        if: github.ref == 'refs/heads/main'
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
         uses: depot/build-push-action@v1
         with:
           project: 2v54ngnx2v
           context: .
+          file: base.Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
