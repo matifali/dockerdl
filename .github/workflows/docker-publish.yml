@@ -3,7 +3,6 @@ on:
   workflow_dispatch:
   workflow_run:
     workflows: ["Build and push dockerdl-base image"]
-    branches: ["main"]
     types:
       - completed
 
