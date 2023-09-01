@@ -82,7 +82,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: depot/build-push-action@v1
         with:
-          project: z5gr2wjp1s
+          project: 2v54ngnx2v
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
