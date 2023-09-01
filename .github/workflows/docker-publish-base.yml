@@ -95,7 +95,7 @@ jobs:
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          repository: username/my-repo
+          repository: ${{ github.repository }}
           event-type: depot
           client-payload: '{"use": "${{ github.event_name == "workflow_dispatch" || github.event_name == "schedule" }}"}'
 
