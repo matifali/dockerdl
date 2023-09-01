@@ -48,9 +48,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@v2
-
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
@@ -77,20 +74,37 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push Docker image
-        id: build-and-push
-        uses: docker/build-push-action@v4
+      # - name: Setup Docker buildx
+      #   uses: docker/setup-buildx-action@v2
+   
+      # - name: Build and push Docker image
+      #   id: build-and-push
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: .
+      #     file: ${{ matrix.dockerfile }}
+      #     push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+      #     tags: ${{ steps.meta.outputs.tags }}
+      #     labels: ${{ steps.meta.outputs.labels }}
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
+      
+      - name: Setup Depot
+        uses: depot/setup-action@v1
+      
+      - name: Build and Push with Depot.dev
+        if: github.ref == 'refs/heads/main'
+        uses: depot/build-push-action@v1
         with:
-          context: .
+          project: 2v54ngnx2v
           file: ${{ matrix.dockerfile }}
-          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+          context: .
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Update Readme on dockerhub
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         uses: peter-evans/dockerhub-description@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
