@@ -58,23 +58,23 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # - name: Setup Docker buildx
-      #   if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
-      #   uses: docker/setup-buildx-action@v2
+      - name: Setup Docker buildx
+        if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
+        uses: docker/setup-buildx-action@v2
       
-      # - name: Build and push Docker image
-      #   if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
-      #   id: build-and-push
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     context: .
-      #     file: base.Dockerfile
-      #     push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
-      #     tags: ${{ steps.meta.outputs.tags }}
-      #     labels: ${{ steps.meta.outputs.labels }}
-      #     build-args: CUDA_VER=${{ matrix.CUDA_VER }}
-      #     cache-from: type=gha
-      #     cache-to: type=gha,mode=max
+      - name: Build and push Docker image
+        if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
+        id: build-and-push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: base.Dockerfile
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: CUDA_VER=${{ matrix.CUDA_VER }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Setup Depot
         if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
