@@ -97,5 +97,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           event-type: depot
-          client-payload: '{"use": "${{ github.event_name == "workflow_dispatch" || github.event_name == "schedule" }}"}'
+          client-payload: '{"depot": "${{ github.event_name == "workflow_dispatch" || github.event_name == "schedule" }}"}'
 
