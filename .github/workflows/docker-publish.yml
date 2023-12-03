@@ -1,5 +1,6 @@
 name: Build and push dockerdl images
 on:
+  pull_request:
   workflow_dispatch:
   workflow_run:
     workflows: ["Build and push dockerdl-base image"]
