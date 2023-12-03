@@ -10,7 +10,7 @@ SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
 # A blank value will install the latest version
 ARG TF_VERSION=
 # Install packages inside the new environment
-RUN pip install --upgrade --no-cache-dir torch torchvision torchaudio torchtext torchserve --extra-index-url https://download.pytorch.org/whl/nightly/cu118 && \
+RUN pip install --upgrade --no-cache-dir torch torchvision torchaudio torchtext torchserve && \
     pip install --upgrade --no-cache-dir lightning && \
     pip install --upgrade --no-cache-dir tensorflow${TF_VERSION:+==${TF_VERSION}} && \
     pip cache purge
