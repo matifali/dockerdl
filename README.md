@@ -1,5 +1,7 @@
 # DockerDL [![Docker Build](https://github.com/matifali/dockerdl/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/matifali/dockerdl/actions/workflows/docker-publish.yml) ![Docker Pulls](https://img.shields.io/docker/pulls/matifali/dockerdl) <a href='https://hub.docker.com/r/matifali/dockerdl' target="_blank"><img alt='DockerHub' src='https://img.shields.io/badge/DockerHub-100000?logoColor=0000FF&labelColor=0000FF&color=0000FF'/></a>
 
+![DALL·E A wide-screen, imaginative illustration of a whale engaged in machine learning activities, featuring a large container to symbolize Docker](https://github.com/matifali/dockerdl/assets/10648092/1f814829-b28c-4a35-ab0a-8cd01a7fcd44)
+
 ## Deep Learning Docker Image
 
 Don't waste time on setting up a deep learning environment while you can get a deep learning environment with everything pre-installed.
