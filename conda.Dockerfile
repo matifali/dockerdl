@@ -1,4 +1,4 @@
-ARG CUDA_VER=12.2.2
+ARG CUDA_VER=12.3.1
 ARG UBUNTU_VER=22.04
 # Download the base image
 FROM nvidia/cuda:${CUDA_VER}-cudnn8-runtime-ubuntu${UBUNTU_VER}
