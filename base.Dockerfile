@@ -34,6 +34,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zip && \
     apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Set the installed PYTHON_VER as the default python version
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_VER} 1 && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTHON_VER} 1
+
 # Expose port 8000 for code-server
 EXPOSE 8000
 

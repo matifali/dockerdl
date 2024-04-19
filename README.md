@@ -83,7 +83,7 @@ Following `--build-arg` are available for `dockerdl-base` image.
 | USERNAME   | User name      | coder   | Any string or `$USER` |
 | USERID     | User ID        | 1000    | `$(id -u $USER)`      |
 | GROUPID    | Group ID       | 1000    | `$(id -g $USER)`      |
-| PYTHON_VER | Python version | 3.10    | 3.10, 3.9, 3.8        |
+| PYTHON_VER | Python version | 3.11    | 3.10, 3.9, 3.8 etc.   |
 | CUDA_VER   | CUDA version   | 12.2.2  | 11.7.0, 11.8.0 etc.   |
 | UBUNTU_VER | Ubuntu version | 22.04   | 22.04, 20.04, 18.04   |
 
