@@ -9,7 +9,7 @@ USER root
 # Shell
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
 # Python version
-ARG PYTHON_VER=3.10
+ARG PYTHON_VER=3.11
 # Install dependencies
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG USERNAME=coder
