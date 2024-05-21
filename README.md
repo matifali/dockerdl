@@ -44,14 +44,6 @@ You can see the full list of tags [https://hub.docker.com/r/matifali/dockerdl/ta
 docker run --gpus all --rm -it -h dockerdl matifali/dockerdl bash
 ```
 
-### Launch a vscode server
-
-```shell
-docker run --gpus all --rm -it -h dockerdl -p 8000:8000 matifali/dockerdl code-server --accept-server-license-terms serve-local --without-connection-token --quality stable --telemetry-level off
-```
-
-Connect to the server using your browser at [http://localhost:8000](http://localhost:8000).
-
 ### JupyterLab server without conda
 
 ```shell
@@ -83,8 +75,8 @@ Following `--build-arg` are available for `dockerdl-base` image.
 | USERNAME   | User name      | coder   | Any string or `$USER` |
 | USERID     | User ID        | 1000    | `$(id -u $USER)`      |
 | GROUPID    | Group ID       | 1000    | `$(id -g $USER)`      |
-| PYTHON_VER | Python version | 3.10    | 3.10, 3.9, 3.8        |
-| CUDA_VER   | CUDA version   | 12.1.1  | 11.7.0, 11.8.0 etc.   |
+| PYTHON_VER | Python version | 3.11    | 3.10, 3.9, 3.8 etc.   |
+| CUDA_VER   | CUDA version   | 12.2.2  | 11.7.0, 11.8.0 etc.   |
 | UBUNTU_VER | Ubuntu version | 22.04   | 22.04, 20.04, 18.04   |
 
 > Note: **Not all combinations of `--build-arg` are tested.**
@@ -113,13 +105,9 @@ docker build -t dockerdl:torch --build-arg -f torch.Dockerfile .
 
 ## How to connect
 
-### JetBrains PyCharm Professional
-
-Follow the instructions [here](https://www.jetbrains.com/help/pycharm/docker.html).
-
 ### VS Code
 
-1. install [vscode](https://code.visualstudio.com/Download).
+1. Install [vscode](https://code.visualstudio.com/Download).
 2. Install [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) extension.
 3. Install [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) extension.
 4. install [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension.
@@ -130,6 +118,10 @@ Follow the instructions [here](https://www.jetbrains.com/help/pycharm/docker.htm
 1. Install Coder. (<https://github.com/coder/coder>).
 2. Use deeplearning template which references these images (<https://github.com/matifali/coder-templates/tree/main/deeplearning>).
 
+### JetBrains PyCharm Professional
+
+Follow the instructions [here](https://www.jetbrains.com/help/pycharm/using-docker-as-a-remote-interpreter.html).
+
 ## Issues
 
 If you find any issue please feel free to create an [issue](https://github.com/matifali/dockerdL/issues/new/choose) and submit a PR.
@@ -137,8 +129,8 @@ If you find any issue please feel free to create an [issue](https://github.com/m
 ## Support
 
 - Give a star (⭐) if using this has helped you.
-- Help the flood victims in Pakistan by donating [here](https://alkhidmat.org/).
-
+- [![Sponsor matifali](https://img.shields.io/badge/Sponsor-matifali-blue)](https://github.com/sponsors/matifali)
+  
 ## References
 
 [^1]: This image is based on [nvidia/cuda](https://hub.docker.com/r/nvidia/cuda) and uses [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to access the GPU.
