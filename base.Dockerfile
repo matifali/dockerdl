@@ -1,15 +1,15 @@
-# Build argumnets
-ARG CUDA_VER=12.2.2
+# Build arguments
+ARG CUDA_VER=12.4.1
 ARG UBUNTU_VER=22.04
 # Download the base image
-FROM nvidia/cuda:${CUDA_VER}-cudnn8-runtime-ubuntu${UBUNTU_VER}
+FROM nvidia/cuda:${CUDA_VER}-cudnn-runtime-ubuntu${UBUNTU_VER}
 # you can check for all available images at https://hub.docker.com/r/nvidia/cuda/tags
 # Install as root
 USER root
 # Shell
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
 # Python version
-ARG PYTHON_VER=3.11
+ARG PYTHON_VER=3.10
 # Install dependencies
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG USERNAME=coder
