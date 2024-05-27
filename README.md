@@ -70,14 +70,14 @@ Modify the corresponding [`Dockerfile`] to add or delete packages.
 
 Following `--build-arg` are available for `dockerdl-base` image.
 
-| Argument   | Description    | Default | Possible Values       |
-| ---------- | -------------- | ------- | --------------------- |
-| USERNAME   | User name      | coder   | Any string or `$USER` |
-| USERID     | User ID        | 1000    | `$(id -u $USER)`      |
-| GROUPID    | Group ID       | 1000    | `$(id -g $USER)`      |
-| PYTHON_VER | Python version | 3.10    | 3.10, 3.9, 3.8 etc.   |
-| CUDA_VER   | CUDA version   | 12.2.2  | 11.7.0, 11.8.0 etc.   |
-| UBUNTU_VER | Ubuntu version | 22.04   | 22.04, 20.04, 18.04   |
+| Argument     | Description    | Default   | Possible Values           |
+| ------------ | -------------- | --------- | ------------------------- |
+| `USERNAME`   | User name      | `coder`   | Any string or `$USER`     |
+| `USERID`     | User ID        | `1000`    | `$(id -u $USER)`          |
+| `GROUPID`    | Group ID       | `1000`    | `$(id -g $USER)`          |
+| `PYTHON_VER` | Python version | `3.10`    | `3.10`, `3.9`, `3.8`      |
+| `CUDA_VER`   | CUDA version   | `12.4.1`  |                           |
+| `UBUNTU_VER` | Ubuntu version | `22.04`   | `22.04`, `20.04`, `18.04` |
 
 > Note: **Not all combinations of `--build-arg` are tested.**
 
@@ -108,10 +108,11 @@ docker build -t dockerdl:torch --build-arg -f torch.Dockerfile .
 ### VS Code
 
 1. Install [vscode](https://code.visualstudio.com/Download).
-2. Install [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) extension.
-3. Install [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) extension.
-4. install [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension.
-5. Follow the instructions [here](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container).
+2. Install the following extensions:
+    1. [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker).
+    2. [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
+    3. [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack).
+4. Follow the instructions [here](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container).
 
 ### Coder
 
