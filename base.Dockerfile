@@ -8,8 +8,6 @@ FROM nvidia/cuda:${CUDA_VER}-cudnn-runtime-ubuntu${UBUNTU_VER}
 USER root
 # Shell
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
-# Python version
-ARG PYTHON_VER=3.10
 # Install dependencies
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG USERNAME=coder
@@ -24,8 +22,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     htop \
     nano \
     nvidia-modprobe \
+    nvtop \
     openssh-client \
-    python${PYTHON_VER} python${PYTHON_VER}-dev python3-pip python-is-python3 \
+    python3 python3-dev python3-pip python-is-python3 \
     sudo \
     tmux \
     unzip \
@@ -34,12 +33,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zip && \
     apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Set the installed PYTHON_VER as the default python version
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_VER} 1 && \
-    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTHON_VER} 1
-
-# Expose port 8000 for code-server
-EXPOSE 8000
+# Download and install zellij
+RUN curl -L -o zellij.tar.gz https://github.com/zellij-org/zellij/releases/download/v0.40.1/zellij-x86_64-unknown-linux-musl.tar.gz && \
+    tar -xzf zellij.tar.gz -C /usr/local/bin && \
+    rm zellij.tar.gz && \
+    zellij --version
 
 # Add a user `${USERNAME}` so that you're not developing as the `root` user
 RUN groupadd -g ${GROUPID} ${USERNAME} && \

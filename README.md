@@ -8,17 +8,18 @@ Don't waste time on setting up a deep learning environment while you can get a d
 
 ## List of Packages installed
 
-- [TensorFlow](https://www.tensorflow.org/)
-- [PyTorch](https://pytorch.org/)
-- [Numpy](https://numpy.org/)
-- [Scikit-Learn](https://scikit-learn.org/)
-- [Pandas](https://pandas.pydata.org/)
-- [Matplotlib](https://matplotlib.org/)
-- [Seaborn](https://seaborn.pydata.org/)
-- [Plotly](https://plotly.com/)
-- [NLTK](https://www.nltk.org/)
-- [Jupyter lab](https://jupyter.org/)
 - [conda](https://docs.conda.io/en/latest/miniconda.html)
+- [Jupyter lab](https://jupyter.org/)
+- [Matplotlib](https://matplotlib.org/)
+- [NLTK](https://www.nltk.org/)
+- [Numpy](https://numpy.org/)
+- [Pandas](https://pandas.pydata.org/)
+- [Plotly](https://plotly.com/)
+- [PyTorch](https://pytorch.org/)
+- [Scikit-Learn](https://scikit-learn.org/)
+- [Seaborn](https://seaborn.pydata.org/)
+- [TensorFlow](https://www.tensorflow.org/)
+- [zellij](https://github.com/zellij-org/zellij)
 
 ## Image variants and tags
 
@@ -75,7 +76,6 @@ Following `--build-arg` are available for `dockerdl-base` image.
 | `USERNAME`   | User name      | `coder`   | Any string or `$USER`     |
 | `USERID`     | User ID        | `1000`    | `$(id -u $USER)`          |
 | `GROUPID`    | Group ID       | `1000`    | `$(id -g $USER)`          |
-| `PYTHON_VER` | Python version | `3.10`    | `3.10`, `3.9`, `3.8`      |
 | `CUDA_VER`   | CUDA version   | `12.4.1`  |                           |
 | `UBUNTU_VER` | Ubuntu version | `22.04`   | `22.04`, `20.04`, `18.04` |
 

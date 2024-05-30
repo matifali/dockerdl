@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     htop \
     nano \
     nvidia-modprobe \
+    nvtop \
     openssh-client \
     sudo \
     tmux \
@@ -42,8 +43,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Expose port 8000 for code-server
-EXPOSE 8000
+# Download and install zellij
+RUN curl -L -o zellij.tar.gz https://github.com/zellij-org/zellij/releases/download/v0.40.1/zellij-x86_64-unknown-linux-musl.tar.gz && \
+    tar -xzf zellij.tar.gz -C /usr/local/bin && \
+    rm zellij.tar.gz && \
+    zellij --version
 
 # Install miniconda
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
