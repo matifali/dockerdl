@@ -41,7 +41,7 @@ You can see the full list of tags [https://hub.docker.com/r/matifali/dockerdl/ta
 
 ## Fast Start
 
-```console
+```shell
 docker run --gpus all --rm -it -h dockerdl matifali/dockerdl bash
 ```
 
@@ -65,11 +65,11 @@ git clone https://github.com/matifali/dockerdl.git
 
 Modify the corresponding [`Dockerfile`] to add or delete packages.
 
-> You may have to rebuild the `dockerdl-base` if you are are building a custom image and then use it as a base image. See [Build](#build) section.
+> You may have to rebuild the `dockerdl-base` if you are building a custom image and then use it as a base image. See [Build](#build) section.
 
 ### Build
 
-Following `--build-arg` are available for `dockerdl-base` image.
+The following `--build-arg` are available for the `dockerdl-base` image.
 
 | Argument     | Description    | Default   | Possible Values           |
 | ------------ | -------------- | --------- | ------------------------- |
@@ -86,7 +86,7 @@ Following `--build-arg` are available for `dockerdl-base` image.
 Build the base image
 
 ```shell
-docker build -t dockerdl-base:latest --build-arg USERNAME=coder --build-arg CUDA_VER=11.7.1 --build-arg UBUNTU_VER=22.04 -f base.Dockerfile .
+docker build -t dockerdl-base:latest --build-arg USERNAME=coder --build-arg CUDA_VER=12.4.1 --build-arg UBUNTU_VER=22.04 -f base.Dockerfile .
 ```
 
 #### Step 2
