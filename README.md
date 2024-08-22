@@ -63,8 +63,9 @@ git clone https://github.com/matifali/dockerdl.git
 
 ### Add or delete packages
 
-Modify the corresponding [`Dockerfile`] to add or delete packages.
+Modify the corresponding `[Dockerfile]` to add or delete packages.
 
+> [!NOTE]
 > You may have to rebuild the `dockerdl-base` if you are building a custom image and then use it as a base image. See [Build](#build) section.
 
 ### Build
@@ -79,7 +80,8 @@ The following `--build-arg` are available for the `dockerdl-base` image.
 | `CUDA_VER`   | CUDA version   | `12.4.1`  |                           |
 | `UBUNTU_VER` | Ubuntu version | `22.04`   | `22.04`, `20.04`, `18.04` |
 
-> Note: **Not all combinations of `--build-arg` are tested.**
+> [!WARNING]
+> **Not all combinations of `--build-arg` are tested.**
 
 #### Step 1
 
