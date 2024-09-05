@@ -1,6 +1,7 @@
 # DockerDL [![Docker Build](https://github.com/matifali/dockerdl/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/matifali/dockerdl/actions/workflows/docker-publish.yml) ![Docker Pulls](https://img.shields.io/docker/pulls/matifali/dockerdl) <a href='https://hub.docker.com/r/matifali/dockerdl' target="_blank"><img alt='DockerHub' src='https://img.shields.io/badge/DockerHub-100000?logoColor=0000FF&labelColor=0000FF&color=0000FF'/></a>
 
 ![DALL·E A wide-screen, imaginative illustration of a whale engaged in machine learning activities, featuring a large container to symbolize Docker](https://github.com/matifali/dockerdl/assets/10648092/1f814829-b28c-4a35-ab0a-8cd01a7fcd44)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmatifali%2Fdockerdl.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmatifali%2Fdockerdl?ref=badge_shield)
 
 ## Deep Learning Docker Image
 
@@ -137,3 +138,7 @@ If you find any issue please feel free to create an [issue](https://github.com/m
 ## References
 
 [^1]: This image is based on [nvidia/cuda](https://hub.docker.com/r/nvidia/cuda) and uses [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to access the GPU.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmatifali%2Fdockerdl.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmatifali%2Fdockerdl?ref=badge_large)
