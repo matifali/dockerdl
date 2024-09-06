@@ -11,8 +11,8 @@ SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
 # Install dependencies
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG USERNAME=coder
-ARG USERID=1000
-ARG GROUPID=1000
+ARG USERID=1001
+ARG GROUPID=1001
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bash \
     bash-completion \
