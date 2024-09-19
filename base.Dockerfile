@@ -11,8 +11,8 @@ SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
 # Install dependencies
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG USERNAME=coder
-ARG USERID=1001
-ARG GROUPID=1001
+ARG USERID=1000
+ARG GROUPID=1000
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bash \
     bash-completion \
@@ -40,7 +40,8 @@ RUN curl -L -o zellij.tar.gz https://github.com/zellij-org/zellij/releases/downl
     zellij --version
 
 # Add a user `${USERNAME}` so that you're not developing as the `root` user
-RUN groupadd -g ${GROUPID} ${USERNAME} && \
+RUN userdel -r ubuntu && \
+    groupadd -g ${GROUPID} ${USERNAME} && \
     useradd ${USERNAME} \
     --create-home \
     --uid ${USERID} \
