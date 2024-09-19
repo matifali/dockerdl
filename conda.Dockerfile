@@ -18,8 +18,8 @@ ENV PATH=${CONDA_DIR}/bin:$PATH
 
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG USERNAME=coder
-ARG USERID=1001
-ARG GROUPID=1001
+ARG USERID=1000
+ARG GROUPID=1000
 
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -57,7 +57,8 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
     sudo wget --quiet https://github.com/tartansandal/conda-bash-completion/raw/master/conda -P /etc/bash_completion.d/
 
 # Add a user `${USERNAME}` so that you're not developing as the `root` user
-RUN groupadd -g ${GROUPID} ${USERNAME} && \
+RUN userdel -r ubuntu && \
+    groupadd -g ${GROUPID} ${USERNAME} && \
     useradd ${USERNAME} \
     --create-home \
     --uid ${USERID} \
