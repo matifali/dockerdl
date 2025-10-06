@@ -77,8 +77,8 @@ The following `--build-arg` are available for the `dockerdl-base` image.
 | `USERNAME`   | User name      | `coder`   | Any string or `$USER`     |
 | `USERID`     | User ID        | `1000`    | `$(id -u $USER)`          |
 | `GROUPID`    | Group ID       | `1000`    | `$(id -g $USER)`          |
-| `CUDA_VER`   | CUDA version   | `12.4.1`  |                           |
-| `UBUNTU_VER` | Ubuntu version | `22.04`   | `22.04`, `20.04`, `18.04` |
+| `CUDA_VER`   | CUDA version   | `12.6.1`  |                           |
+| `UBUNTU_VER` | Ubuntu version | `24.04`   | `24.04`, `22.04`, `20.04` |
 
 > [!WARNING]
 > **Not all combinations of `--build-arg` are tested.**

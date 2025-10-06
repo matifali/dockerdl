@@ -1,6 +1,6 @@
 # Build arguments
-ARG CUDA_VER=12.4.1
-ARG UBUNTU_VER=22.04
+ARG CUDA_VER=12.6.1
+ARG UBUNTU_VER=24.04
 # Download the base image
 FROM nvidia/cuda:${CUDA_VER}-cudnn-runtime-ubuntu${UBUNTU_VER}
 # you can check for all available images at https://hub.docker.com/r/nvidia/cuda/tags
@@ -40,7 +40,8 @@ RUN curl -L -o zellij.tar.gz https://github.com/zellij-org/zellij/releases/downl
     zellij --version
 
 # Add a user `${USERNAME}` so that you're not developing as the `root` user
-RUN groupadd -g ${GROUPID} ${USERNAME} && \
+RUN userdel -r ubuntu && \
+    groupadd -g ${GROUPID} ${USERNAME} && \
     useradd ${USERNAME} \
     --create-home \
     --uid ${USERID} \
