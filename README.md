@@ -19,6 +19,7 @@ Don't waste time on setting up a deep learning environment while you can get a d
 - [Scikit-Learn](https://scikit-learn.org/)
 - [Seaborn](https://seaborn.pydata.org/)
 - [TensorFlow](https://www.tensorflow.org/)
+- [uv](https://github.com/astral-sh/uv)
 - [zellij](https://github.com/zellij-org/zellij)
 
 ## Image variants and tags
@@ -72,13 +73,10 @@ Modify the corresponding `[Dockerfile]` to add or delete packages.
 
 The following `--build-arg` are available for the `dockerdl-base` image.
 
-| Argument     | Description    | Default   | Possible Values           |
-| ------------ | -------------- | --------- | ------------------------- |
-| `USERNAME`   | User name      | `coder`   | Any string or `$USER`     |
-| `USERID`     | User ID        | `1000`    | `$(id -u $USER)`          |
-| `GROUPID`    | Group ID       | `1000`    | `$(id -g $USER)`          |
-| `CUDA_VER`   | CUDA version   | `12.4.1`  |                           |
-| `UBUNTU_VER` | Ubuntu version | `22.04`   | `22.04`, `20.04`, `18.04` |
+| Argument     | Description    | Default    | Possible Values |
+| ------------ | -------------- | ---------- | --------------- |
+| `CUDA_VER`   | CUDA version   | `13.0.2`   |                 |
+| `UBUNTU_VER` | Ubuntu version | `24.04`    | `24.04`, `22.04` |
 
 > [!WARNING]
 > **Not all combinations of `--build-arg` are tested.**
@@ -88,7 +86,7 @@ The following `--build-arg` are available for the `dockerdl-base` image.
 Build the base image
 
 ```shell
-docker build -t dockerdl-base:latest --build-arg USERNAME=coder --build-arg CUDA_VER=12.4.1 --build-arg UBUNTU_VER=22.04 -f base.Dockerfile .
+docker build -t dockerdl-base:latest --build-arg CUDA_VER=13.0.2 --build-arg UBUNTU_VER=24.04 -f base.Dockerfile .
 ```
 
 #### Step 2

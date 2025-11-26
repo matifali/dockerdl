@@ -1,9 +1,11 @@
 FROM matifali/dockerdl-base:latest
 # Install as user 1000
-USER 1000
+USER ubuntu
 # Shell
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
+USER root
 # Install pytorch
-RUN pip install --upgrade --no-cache-dir torch torchvision torchaudio torchtext torchserve && \
-    pip install --upgrade --no-cache-dir lightning && \
-    pip cache purge
+RUN uv pip install --system --break-system-packages --upgrade torch torchvision torchaudio torchtext torchserve && \
+    uv pip install --system --break-system-packages --upgrade lightning
+# Install as user 1000
+USER ubuntu
