@@ -6,5 +6,5 @@ SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
 USER root
 # Install pytorch
 RUN uv pip install --system --break-system-packages --upgrade torch torchvision torchaudio torchtext torchserve && \
-    uv pip install --system --break-system-packages --upgrade lightning
+    uv pip install --system --break-system-packages --upgrade lightning && uv cache clean
 USER ubuntu

@@ -8,5 +8,5 @@ SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
 ARG TF_VERSION=
 USER root
 # Install packages inside the new environment
-RUN uv pip install --system --break-system-packages --upgrade tensorflow${TF_VERSION:+==${TF_VERSION}}
+RUN uv pip install --system --break-system-packages --upgrade tensorflow${TF_VERSION:+==${TF_VERSION}} && uv cache clean
 USER ubuntu

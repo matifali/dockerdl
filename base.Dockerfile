@@ -63,6 +63,7 @@ RUN uv pip install --system --break-system-packages --upgrade pip setuptools whe
     sympy \
     seaborn \
     tqdm && \
+    uv cache clean && \
     # Set path of python packages
     echo "# Set path of python packages" >>/home/ubuntu/.bashrc && \
     echo 'export PATH=$HOME/.local/bin:$PATH' >>/home/ubuntu/.bashrc

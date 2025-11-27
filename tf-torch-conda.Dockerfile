@@ -41,6 +41,7 @@ RUN conda activate DL && uv pip install --upgrade pip && \
     seaborn \
     tensorflow${TF_VERSION:+==${TF_VERSION}} \
     tqdm && \
+    uv cache clean && \
     # Set path of python packages
     echo "# Set path of python packages" >>/home/ubuntu/.bashrc && \
     echo 'export PATH=/home/ubuntu/.local/bin:$PATH' >>/home/ubuntu/.bashrc
