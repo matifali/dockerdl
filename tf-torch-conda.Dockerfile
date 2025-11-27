@@ -1,10 +1,7 @@
 FROM matifali/dockerdl:conda
 
 ARG PYTHON_VER=3.12
-# Change to your user
 USER ubuntu
-
-# Change Workdir
 WORKDIR /home/ubuntu
 
 # Accept conda tos

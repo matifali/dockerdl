@@ -1,5 +1,4 @@
 FROM matifali/dockerdl-base:latest
-# Install as user 1000
 USER ubuntu
 # Shell
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
@@ -9,5 +8,4 @@ ARG TF_VERSION=
 USER root
 # Install packages inside the new environment
 RUN uv pip install --system --break-system-packages --upgrade tensorflow${TF_VERSION:+==${TF_VERSION}}
-# Install as user 1000
 USER ubuntu
