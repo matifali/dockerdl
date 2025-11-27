@@ -19,7 +19,44 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-base:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        include:
+          - dockerfile: ./base.Dockerfile
+            image: matifali/dockerdl-base
+            tag: latest
+          - dockerfile: ./conda.Dockerfile
+            image: matifali/dockerdl
+            tag: conda
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to DockerHub
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+          tags: ${{ matrix.image }}:${{ matrix.tag }}
+
+  build-images:
+    needs: build-base
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -29,8 +66,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./conda.Dockerfile
-            tag: conda
           - dockerfile: ./tf-torch-conda.Dockerfile
             tag: tf-torch-conda
           - dockerfile: ./tf-torch.Dockerfile
@@ -55,19 +90,6 @@ jobs:
 
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v3
-        
-      - name: Build base images
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ${{ item }}
-          load: true
-          tags: ${{ steps.meta.outputs.tags }}
-        strategy:
-          matrix:
-            item:
-              - base.Dockerfile
-              - conda.Dockerfile
 
       - name: Docker meta
         id: meta
