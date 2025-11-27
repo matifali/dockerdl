@@ -35,6 +35,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ matrix.image }}
+          tags: ${{ matrix.tag }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
@@ -42,7 +48,8 @@ jobs:
           file: ${{ matrix.dockerfile }}
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
-          tags: ${{ matrix.image }}:${{ matrix.tag }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
   build-images:
     needs: build-base
