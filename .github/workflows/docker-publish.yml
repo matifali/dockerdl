@@ -1,12 +1,6 @@
 name: Build and push dockerdl images
 on:
   pull_request:
-    paths:
-      - ./conda.Dockerfile
-      - ./torch.Dockerfile
-      - ./tf-torch.Dockerfile
-      - ./tf-torch-conda.Dockerfile
-      - ./tf.Dockerfile
   workflow_dispatch:
 
 concurrency:
