@@ -48,7 +48,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ${{ matrix.image }}
+            ${{ github.event_name != 'pull_request' && matrix.image || '' }}
             ghcr.io/${{ matrix.image }}
           tags: ${{ matrix.tag }}
       - name: Build and push Docker image
