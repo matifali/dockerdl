@@ -8,61 +8,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-base:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    strategy:
-      matrix:
-        include:
-          - dockerfile: ./base.Dockerfile
-            image: matifali/dockerdl-base
-            tag: latest
-          - dockerfile: ./conda.Dockerfile
-            image: matifali/dockerdl
-            tag: conda
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Login to GitHub Container Registry
-        if: github.event_name == 'pull_request'
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ${{ github.event_name != 'pull_request' && matrix.image || '' }}
-            ghcr.io/${{ matrix.image }}
-          tags: ${{ matrix.tag }}
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ${{ matrix.dockerfile }}
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
   build-images:
-    needs: build-base
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -72,6 +18,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - dockerfile: ./base.Dockerfile
+            image: matifali/dockerdl-base
+            tag: latest
+          - dockerfile: ./conda.Dockerfile
+            image: matifali/dockerdl
+            tag: conda
           - dockerfile: ./tf-torch-conda.Dockerfile
             tag: tf-torch-conda
           - dockerfile: ./tf-torch.Dockerfile
@@ -97,6 +49,13 @@ jobs:
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Login to DockerHub
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Login to GitHub Container Registry
         if: github.event_name == 'pull_request'
         uses: docker/login-action@v3
@@ -110,27 +69,10 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            matifali/dockerdl
-          tags: |
-            type=raw,value=${{ matrix.tag }}
-            type=raw,value=latest,enable=${{ matrix.tag == 'tf-torch' }}
-          labels: |
-            org.opencontainers.image.source=${{ github.event.repository.clone_url }}
-            org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.created=${{ github.event.head_commit.timestamp }}
-            org.opencontainers.image.title=${{ github.event.repository.name }}
-            org.opencontainers.image.description=${{ github.event.repository.description }}
-            org.opencontainers.image.url=${{ github.event.repository.html_url }}
-            org.opencontainers.image.licenses=${{ github.event.repository.license.spdx_id }}
-            org.opencontainers.image.authors=${{ github.event.repository.owner.login }}
-            
-      - name: Login to DockerHub
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+            ${{ github.event_name != 'pull_request' && matrix.image || '' }}
+            ghcr.io/${{ matrix.image || 'matifali/dockerdl' }}
+          tags: ${{ matrix.tag }}
+      
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v6
@@ -138,7 +80,7 @@ jobs:
           context: .
           file: ${{ matrix.dockerfile }}
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
