@@ -1,5 +1,4 @@
-ARG CACHE_BUSTER=
-FROM ghcr.io/matifali/dockerdl-base:latest
+FROM matifali/dockerdl-base:latest
 USER ubuntu
 # Shell
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]

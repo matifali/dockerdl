@@ -8,7 +8,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-images:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -24,14 +24,15 @@ jobs:
           - dockerfile: ./conda.Dockerfile
             image: matifali/dockerdl
             tag: conda
-          - dockerfile: ./tf-torch-conda.Dockerfile
-            tag: tf-torch-conda
-          - dockerfile: ./tf-torch.Dockerfile
-            tag: tf-torch
-          - dockerfile: ./torch.Dockerfile
-            tag: torch
           - dockerfile: ./tf.Dockerfile
             tag: tf
+          - dockerfile: ./torch.Dockerfile
+            tag: torch
+          - dockerfile: ./tf-torch.Dockerfile
+            tag: tf-torch
+          - dockerfile: ./tf-torch-conda.Dockerfile
+            tag: tf-torch-conda
+
     steps:
       - name: Maximize build space
         run: |
@@ -52,27 +53,17 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Login to DockerHub
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login to GitHub Container Registry
-        if: github.event_name == 'pull_request'
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: |
-            ${{ github.event_name != 'pull_request' && matrix.image || '' }}
-            ghcr.io/${{ matrix.image || 'matifali/dockerdl' }}
+          images: ${{ matrix.image || 'matifali/dockerdl' }}
           tags: ${{ matrix.tag }}
       
       - name: Build and push Docker image
@@ -82,7 +73,8 @@ jobs:
           context: .
           file: ${{ matrix.dockerfile }}
           platforms: linux/amd64,linux/arm64
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
+          load: ${{ matrix.tag == 'latest' || matrix.tag == 'conda' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
