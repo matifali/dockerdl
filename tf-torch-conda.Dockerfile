@@ -1,4 +1,5 @@
-FROM matifali/dockerdl:conda
+ARG CACHE_BUSTER=
+FROM ghcr.io/matifali/dockerdl:conda
 
 ARG PYTHON_VER=3.12
 USER ubuntu
