@@ -40,39 +40,21 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push base image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: base.Dockerfile
-          platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: matifali/dockerdl-base:latest
-          labels: |
-            org.opencontainers.image.source=${{ github.event.repository.clone_url }}
-            org.opencontainers.image.revision=${{ github.sha }}
-      
-      - name: Build and push conda image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: conda.Dockerfile
-          platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: matifali/dockerdl:conda
-          labels: |
-            org.opencontainers.image.source=${{ github.event.repository.clone_url }}
-            org.opencontainers.image.revision=${{ github.sha }}
-
-      - name: Build and push other images
+      - name: Build and push images
         run: |
-          images=("tf" "torch" "tf-torch" "tf-torch-conda")
+          images=("base" "conda" "tf" "torch" "tf-torch" "tf-torch-conda")
           for image in "${images[@]}"; do
+            dockerfile="${image}.Dockerfile"
+            if [ "$image" == "base" ]; then
+              tag="matifali/dockerdl-base:latest"
+            else
+              tag="matifali/dockerdl:${image}"
+            fi
             docker buildx build \
               --platform linux/amd64,linux/arm64 \
-              --file "${image}.Dockerfile" \
-              --tag "matifali/dockerdl:${image}" \
-              ${{ github.event_name != 'pull_request' && '--push' || '' }} \
+              --file "${dockerfile}" \
+              --tag "${tag}" \
+              ${{ github.event_name != 'pull_request' && '--push' || '--load' }} \
               .
           done
 
