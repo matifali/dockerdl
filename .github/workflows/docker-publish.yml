@@ -1,5 +1,7 @@
 name: Build and push dockerdl images
 on:
+  push:
+    branches: ["main"]
   pull_request:
   workflow_dispatch:
 
