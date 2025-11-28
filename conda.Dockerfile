@@ -14,7 +14,7 @@ SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
 ENV CONDA_DIR /opt/miniconda
 
 # conda path
-ENV PATH=${CONDA_DIR}/bin:$PATH
+ENV PATH="${CONDA_DIR}/bin:$PATH"
 
 ARG DEBIAN_FRONTEND="noninteractive"
 
