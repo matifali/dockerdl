@@ -1,4 +1,5 @@
-FROM matifali/dockerdl:conda
+ARG BASE_IMAGE=matifali/dockerdl:conda
+FROM ${BASE_IMAGE}
 
 ARG PYTHON_VER=3.12
 USER ubuntu

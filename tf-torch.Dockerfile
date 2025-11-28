@@ -1,4 +1,5 @@
-FROM matifali/dockerdl-base:latest
+ARG BASE_IMAGE=matifali/dockerdl-base:latest
+FROM ${BASE_IMAGE}
 USER ubuntu
 # Shell
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
