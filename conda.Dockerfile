@@ -7,8 +7,7 @@ FROM nvidia/cuda:${CUDA_VER}-cudnn-runtime-ubuntu${UBUNTU_VER}
 # Install as root
 USER root
 
-# Shell
-SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
+SHELL ["/bin/bash", "-c"]
 
 # miniconda path
 ENV CONDA_DIR /opt/miniconda
