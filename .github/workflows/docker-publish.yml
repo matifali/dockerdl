@@ -124,8 +124,8 @@ jobs:
         with:
           images: matifali/dockerdl
           tags: |
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
-            type=raw,value=${{ github.event.pull_request.head.ref }},enable=${{ github.event_name == 'pull_request' }}
+            type=raw,value=${{ matrix.tag }}
+            type=raw,value=latest,enable=${{ matrix.tag == 'tf-torch-conda' && github.ref == 'refs/heads/main' }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.clone_url }}
             org.opencontainers.image.revision=${{ github.sha }}
@@ -135,3 +135,15 @@ jobs:
             org.opencontainers.image.url=${{ github.event.repository.html_url }}
             org.opencontainers.image.licenses=${{ github.event.repository.license.spdx_id }}
             org.opencontainers.image.authors=${{ github.event.repository.owner.login }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            BASE_IMAGE=${{ matrix.base_image }}
