@@ -1,5 +1,5 @@
-ARG CUDA_VER=12.4.1
-ARG UBUNTU_VER=22.04
+ARG CUDA_VER=13.0.2
+ARG UBUNTU_VER=24.04
 # Download the base image
 FROM nvidia/cuda:${CUDA_VER}-cudnn-runtime-ubuntu${UBUNTU_VER}
 # you can check for all available images at https://hub.docker.com/r/nvidia/cuda/tags
@@ -7,19 +7,15 @@ FROM nvidia/cuda:${CUDA_VER}-cudnn-runtime-ubuntu${UBUNTU_VER}
 # Install as root
 USER root
 
-# Shell
-SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
+SHELL ["/bin/bash", "-c"]
 
 # miniconda path
 ENV CONDA_DIR /opt/miniconda
 
 # conda path
-ENV PATH=${CONDA_DIR}/bin:$PATH
+ENV PATH="${CONDA_DIR}/bin:$PATH"
 
 ARG DEBIAN_FRONTEND="noninteractive"
-ARG USERNAME=coder
-ARG USERID=1000
-ARG GROUPID=1000
 
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -49,27 +45,26 @@ RUN curl -L -o zellij.tar.gz https://github.com/zellij-org/zellij/releases/downl
     rm zellij.tar.gz && \
     zellij --version
 
+ARG TARGETARCH
 # Install miniconda
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
+RUN case "${TARGETARCH}" in \
+    "amd64") ARCH_SUFFIX="x86_64" ;; \
+    "arm64") ARCH_SUFFIX="aarch64" ;; \
+    *) echo "Unsupported TARGETARCH: ${TARGETARCH}"; exit 1 ;; \
+    esac && \
+    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-${ARCH_SUFFIX}.sh -O miniconda.sh && \
     /bin/bash miniconda.sh -b -p ${CONDA_DIR} && \
     rm -rf miniconda.sh && \
     # Enable conda autocomplete
     sudo wget --quiet https://github.com/tartansandal/conda-bash-completion/raw/master/conda -P /etc/bash_completion.d/
 
-# Add a user `${USERNAME}` so that you're not developing as the `root` user
-RUN groupadd -g ${GROUPID} ${USERNAME} && \
-    useradd ${USERNAME} \
-    --create-home \
-    --uid ${USERID} \
-    --gid ${GROUPID} \
-    --shell=/bin/bash && \
-    echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd && \
-    chown -R ${USERID}:${GROUPID} ${CONDA_DIR} && \
-    echo ". $CONDA_DIR/etc/profile.d/conda.sh" >>/home/${USERNAME}/.profile
+# Add a user `ubuntu` so that you're not developing as the `root` user
+RUN chown -R 1000:1000 ${CONDA_DIR} && \
+    echo ". $CONDA_DIR/etc/profile.d/conda.sh" >>/home/ubuntu/.profile
 
-USER ${USERNAME}
+USER ubuntu
 
-WORKDIR /home/${USERNAME}
+WORKDIR /home/ubuntu
 
 # Initilize shell for conda
-RUN conda init bash && source /home/${USERNAME}/.bashrc
+RUN conda init bash && source /home/ubuntu/.bashrc

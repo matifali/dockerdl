@@ -1,6 +1,6 @@
 # Build arguments
-ARG CUDA_VER=12.4.1
-ARG UBUNTU_VER=22.04
+ARG CUDA_VER=13.0.2
+ARG UBUNTU_VER=24.04
 # Download the base image
 FROM nvidia/cuda:${CUDA_VER}-cudnn-runtime-ubuntu${UBUNTU_VER}
 # you can check for all available images at https://hub.docker.com/r/nvidia/cuda/tags
@@ -10,9 +10,6 @@ USER root
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
 # Install dependencies
 ARG DEBIAN_FRONTEND="noninteractive"
-ARG USERNAME=coder
-ARG USERID=1000
-ARG GROUPID=1000
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bash \
     bash-completion \
@@ -24,7 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     nvidia-modprobe \
     nvtop \
     openssh-client \
-    python3 python3-dev python3-pip python-is-python3 \
+    python3 python3-dev python-is-python3 \
     sudo \
     tmux \
     unzip \
@@ -39,22 +36,17 @@ RUN curl -L -o zellij.tar.gz https://github.com/zellij-org/zellij/releases/downl
     rm zellij.tar.gz && \
     zellij --version
 
-# Add a user `${USERNAME}` so that you're not developing as the `root` user
-RUN groupadd -g ${GROUPID} ${USERNAME} && \
-    useradd ${USERNAME} \
-    --create-home \
-    --uid ${USERID} \
-    --gid ${GROUPID} \
-    --shell=/bin/bash && \
-    echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd
-
 # Change to your user
-USER ${USERNAME}
+USER ubuntu
 # Chnage Workdir
-WORKDIR /home/${USERNAME}
+WORKDIR /home/ubuntu
+# Download and install uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/home/ubuntu/.local/bin:/home/ubuntu/.cargo/bin:${PATH}"
+USER root
 # Install packages inside the new environment
-RUN pip install --upgrade --no-cache-dir pip setuptools wheel && \
-    pip install --upgrade --no-cache-dir \
+RUN uv pip install --system --break-system-packages --upgrade pip setuptools wheel && \
+    uv pip install --system --break-system-packages \
     ipywidgets \
     jupyterlab \
     matplotlib \
@@ -71,7 +63,9 @@ RUN pip install --upgrade --no-cache-dir pip setuptools wheel && \
     sympy \
     seaborn \
     tqdm && \
-    pip cache purge && \
+    uv cache clean && \
     # Set path of python packages
-    echo "# Set path of python packages" >>/home/${USERNAME}/.bashrc && \
-    echo 'export PATH=$HOME/.local/bin:$PATH' >>/home/${USERNAME}/.bashrc
+    echo "# Set path of python packages" >>/home/ubuntu/.bashrc && \
+    echo 'export PATH=$HOME/.local/bin:$PATH' >>/home/ubuntu/.bashrc
+# Change to your user
+USER ubuntu
