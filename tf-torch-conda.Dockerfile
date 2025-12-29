@@ -21,7 +21,7 @@ RUN echo "# Make new shells activate the DL environment" >>/home/ubuntu/.bashrc 
 
 # Download and install uv
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/home/ubuntu/.cargo/bin:${PATH}"
+ENV PATH="/home/ubuntu/.local/bin:/home/ubuntu/.cargo/bin:${PATH}"
 
 # Install packages inside the new environment
 RUN . /opt/miniconda/etc/profile.d/conda.sh && \
