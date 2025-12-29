@@ -24,7 +24,8 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/home/ubuntu/.cargo/bin:${PATH}"
 
 # Install packages inside the new environment
-RUN conda activate DL && uv pip install --no-cache --upgrade pip && \
+RUN . /opt/miniconda/etc/profile.d/conda.sh && \
+    conda activate DL && uv pip install --no-cache --upgrade pip && \
     uv pip install --no-cache --upgrade torch torchvision torchaudio torchtext && \
     uv pip install --no-cache \
     ipywidgets \
