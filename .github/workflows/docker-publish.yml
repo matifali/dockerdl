@@ -10,7 +10,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Run Hadolint
+        uses: hadolint/hadolint-action@v3.3.0
+        with:
+          dockerfile: "*.Dockerfile"
+          failure-threshold: error
+
   build-base:
+    needs: lint
     runs-on: ubuntu-latest
     outputs:
       registry: ${{ steps.meta.outputs.registry }}
@@ -93,7 +105,7 @@ jobs:
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
           sudo rm -rf /usr/local/lib/android
           sudo rm -rf /usr/local/lib/node_modules/npm
-          
+
       - name: Checkout repository
         uses: actions/checkout@v6
 
@@ -109,7 +121,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      
+
       - name: Login to GitHub Container Registry
         if: github.event_name == 'pull_request'
         uses: docker/login-action@v3

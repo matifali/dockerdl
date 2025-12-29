@@ -7,7 +7,8 @@ FROM nvidia/cuda:${CUDA_VER}-cudnn-runtime-ubuntu${UBUNTU_VER}
 # Install as root
 USER root
 
-SHELL ["/bin/bash", "-c"]
+# Shell
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # miniconda path
 ENV CONDA_DIR /opt/miniconda
@@ -16,6 +17,7 @@ ENV CONDA_DIR /opt/miniconda
 ENV PATH="${CONDA_DIR}/bin:$PATH"
 
 ARG DEBIAN_FRONTEND="noninteractive"
+ARG ZELLIJ_VERSION=v0.40.1
 
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -33,14 +35,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     tmux \
     unzip \
     vim \
-    wget \ 
+    wget \
     zip && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Download and install zellij
-RUN curl -L -o zellij.tar.gz https://github.com/zellij-org/zellij/releases/download/v0.40.1/zellij-x86_64-unknown-linux-musl.tar.gz && \
+RUN curl -L -o zellij.tar.gz "https://github.com/zellij-org/zellij/releases/download/${ZELLIJ_VERSION}/zellij-x86_64-unknown-linux-musl.tar.gz" && \
     tar -xzf zellij.tar.gz -C /usr/local/bin && \
     rm zellij.tar.gz && \
     zellij --version
@@ -52,11 +54,12 @@ RUN case "${TARGETARCH}" in \
     "arm64") ARCH_SUFFIX="aarch64" ;; \
     *) echo "Unsupported TARGETARCH: ${TARGETARCH}"; exit 1 ;; \
     esac && \
-    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-${ARCH_SUFFIX}.sh -O miniconda.sh && \
-    /bin/bash miniconda.sh -b -p ${CONDA_DIR} && \
+    curl -fsSL "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-${ARCH_SUFFIX}.sh" -o miniconda.sh && \
+    /bin/bash miniconda.sh -b -p "${CONDA_DIR}" && \
     rm -rf miniconda.sh && \
+    conda clean --all --yes && \
     # Enable conda autocomplete
-    sudo wget --quiet https://github.com/tartansandal/conda-bash-completion/raw/master/conda -P /etc/bash_completion.d/
+    curl -fsSL https://github.com/tartansandal/conda-bash-completion/raw/master/conda -o /etc/bash_completion.d/conda
 
 # Add a user `ubuntu` so that you're not developing as the `root` user
 RUN chown -R 1000:1000 ${CONDA_DIR} && \
