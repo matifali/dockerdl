@@ -1,5 +1,5 @@
 # Build arguments
-ARG CUDA_VER=13.0.2
+ARG CUDA_VER=13.1.0
 ARG UBUNTU_VER=24.04
 # Download the base image
 FROM nvidia/cuda:${CUDA_VER}-cudnn-runtime-ubuntu${UBUNTU_VER}
