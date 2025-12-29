@@ -8,6 +8,8 @@ FROM nvidia/cuda:${CUDA_VER}-cudnn-runtime-ubuntu${UBUNTU_VER}
 USER root
 # Shell
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
+ARG ZELLIJ_VERSION=v0.40.1
+
 # Install dependencies
 ARG DEBIAN_FRONTEND="noninteractive"
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -26,12 +28,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     tmux \
     unzip \
     vim \
-    wget \ 
+    wget \
     zip && \
-    apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Download and install zellij
-RUN curl -L -o zellij.tar.gz https://github.com/zellij-org/zellij/releases/download/v0.40.1/zellij-x86_64-unknown-linux-musl.tar.gz && \
+RUN curl -L -o zellij.tar.gz "https://github.com/zellij-org/zellij/releases/download/${ZELLIJ_VERSION}/zellij-x86_64-unknown-linux-musl.tar.gz" && \
     tar -xzf zellij.tar.gz -C /usr/local/bin && \
     rm zellij.tar.gz && \
     zellij --version
@@ -45,8 +49,8 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/home/ubuntu/.local/bin:/home/ubuntu/.cargo/bin:${PATH}"
 USER root
 # Install packages inside the new environment
-RUN uv pip install --system --break-system-packages --upgrade pip setuptools wheel && \
-    uv pip install --system --break-system-packages \
+RUN uv pip install --no-cache --system --break-system-packages --upgrade pip setuptools wheel && \
+    uv pip install --no-cache --system --break-system-packages \
     ipywidgets \
     jupyterlab \
     matplotlib \
@@ -63,7 +67,7 @@ RUN uv pip install --system --break-system-packages --upgrade pip setuptools whe
     sympy \
     seaborn \
     tqdm && \
-    uv cache clean && \
+    find /usr/local/lib/python3.* -name '__pycache__' -exec rm -rf {} + && \
     # Set path of python packages
     echo "# Set path of python packages" >>/home/ubuntu/.bashrc && \
     echo 'export PATH=$HOME/.local/bin:$PATH' >>/home/ubuntu/.bashrc

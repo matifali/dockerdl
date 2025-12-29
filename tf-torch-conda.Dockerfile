@@ -5,12 +5,15 @@ ARG PYTHON_VER=3.12
 USER ubuntu
 WORKDIR /home/ubuntu
 
+# Shell
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # Accept conda tos
 RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main && \
     conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 
 # Create deep-learning environment
-RUN conda create --name DL --channel conda-forge python=${PYTHON_VER} --yes && conda clean --all --yes
+RUN conda create --name DL --channel conda-forge python="${PYTHON_VER}" --yes && conda clean --all --yes
 
 # Make new shells activate the DL environment:
 RUN echo "# Make new shells activate the DL environment" >>/home/ubuntu/.bashrc && \
@@ -21,9 +24,9 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/home/ubuntu/.cargo/bin:${PATH}"
 
 # Install packages inside the new environment
-RUN conda activate DL && uv pip install --upgrade pip && \
-    uv pip install --upgrade torch torchvision torchaudio torchtext && \
-    uv pip install \
+RUN conda activate DL && uv pip install --no-cache --upgrade pip && \
+    uv pip install --no-cache --upgrade torch torchvision torchaudio torchtext && \
+    uv pip install --no-cache \
     ipywidgets \
     jupyterlab \
     lightning \
@@ -41,8 +44,8 @@ RUN conda activate DL && uv pip install --upgrade pip && \
     seaborn \
     tensorflow${TF_VERSION:+==${TF_VERSION}} \
     tqdm && \
-    uv cache clean && \
     conda clean --all --yes && \
+    find /opt/miniconda/envs/DL/lib/python3.* -name '__pycache__' -exec rm -rf {} + && \
     # Set path of python packages
     echo "# Set path of python packages" >>/home/ubuntu/.bashrc && \
     echo 'export PATH=/home/ubuntu/.local/bin:$PATH' >>/home/ubuntu/.bashrc

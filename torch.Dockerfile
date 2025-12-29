@@ -5,6 +5,7 @@ USER ubuntu
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
 USER root
 # Install pytorch
-RUN uv pip install --system --break-system-packages --upgrade torch torchvision torchaudio torchtext torchserve && \
-    uv pip install --system --break-system-packages --upgrade lightning && uv cache clean
+RUN uv pip install --no-cache --system --break-system-packages --upgrade torch torchvision torchaudio torchtext torchserve && \
+    uv pip install --no-cache --system --break-system-packages --upgrade lightning && \
+    find /usr/local/lib/python3.* -name '__pycache__' -exec rm -rf {} +
 USER ubuntu
