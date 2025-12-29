@@ -10,7 +10,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Run Hadolint
+        uses: hadolint/hadolint-action@v3.3.0
+        with:
+          dockerfile: |
+            base.Dockerfile
+            conda.Dockerfile
+            tf.Dockerfile
+            torch.Dockerfile
+            tf-torch.Dockerfile
+            tf-torch-conda.Dockerfile
+          failure-threshold: error
+
   build-base:
+    needs: lint
     runs-on: ubuntu-latest
     outputs:
       registry: ${{ steps.meta.outputs.registry }}
