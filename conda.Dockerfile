@@ -20,9 +20,7 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ARG ZELLIJ_VERSION=v0.40.1
 
 # Install dependencies
-RUN --mount=type=cache,target=/var/lib/apt/lists \
-    --mount=type=cache,target=/var/cache/apt \
-    apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     bash \
     bash-completion \
     ca-certificates \
