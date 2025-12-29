@@ -70,6 +70,6 @@ RUN uv pip install --no-cache --system --break-system-packages --upgrade pip set
     find /usr/local/lib/python3.* -name '__pycache__' -exec rm -rf {} + && \
     # Set path of python packages
     echo "# Set path of python packages" >>/home/ubuntu/.bashrc && \
-    echo 'export PATH=$HOME/.local/bin:$PATH' >>/home/ubuntu/.bashrc
+    echo "export PATH=\$HOME/.local/bin:\$PATH" >>/home/ubuntu/.bashrc
 # Change to your user
 USER ubuntu

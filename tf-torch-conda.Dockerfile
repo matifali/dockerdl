@@ -49,4 +49,4 @@ RUN . /opt/miniconda/etc/profile.d/conda.sh && \
     find /opt/miniconda/envs/DL/lib/python3.* -name '__pycache__' -exec rm -rf {} + && \
     # Set path of python packages
     echo "# Set path of python packages" >>/home/ubuntu/.bashrc && \
-    echo 'export PATH=/home/ubuntu/.local/bin:$PATH' >>/home/ubuntu/.bashrc
+    echo "export PATH=/home/ubuntu/.local/bin:\$PATH" >>/home/ubuntu/.bashrc
