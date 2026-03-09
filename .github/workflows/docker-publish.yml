@@ -65,7 +65,7 @@ jobs:
             ${{ github.event_name != 'pull_request' && matrix.image || format('ghcr.io/{0}', matrix.image) }}
           tags: ${{ matrix.tag }}
       - name: Build and push Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ${{ matrix.dockerfile }}
@@ -149,7 +149,7 @@ jobs:
             org.opencontainers.image.authors=${{ github.event.repository.owner.login }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ${{ matrix.dockerfile }}
