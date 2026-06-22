@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Run Hadolint
         uses: hadolint/hadolint-action@v3.3.0
         with:
@@ -40,7 +40,7 @@ jobs:
             tag: conda
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Setup Docker buildx
@@ -107,7 +107,7 @@ jobs:
           sudo rm -rf /usr/local/lib/node_modules/npm
 
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
