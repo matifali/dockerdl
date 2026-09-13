@@ -10,11 +10,14 @@ on:
 
 concurrency:
   group: dockerdl-${{ github.ref }}
-  cancel-in-progress: true
+  # Never cancel a publish to main mid-way (push and schedule share the ref)
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   # PRs push to GHCR so later jobs can test against this PR's images
   REGISTRY_PREFIX: ${{ github.event_name == 'pull_request' && 'ghcr.io/' || '' }}
+  # Per-PR base tag so concurrent PRs don't build children against each other's base
+  BASE_TAG: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'latest' }}
 
 jobs:
   lint:
@@ -111,7 +114,7 @@ jobs:
         working-directory: /tmp/digests
         run: |
           # shellcheck disable=SC2046  # digests never contain spaces
-          docker buildx imagetools create -t "${REGISTRY_PREFIX}matifali/dockerdl-base:latest" \
+          docker buildx imagetools create -t "${REGISTRY_PREFIX}matifali/dockerdl-base:${BASE_TAG}" \
             $(printf "${REGISTRY_PREFIX}matifali/dockerdl-base@sha256:%s " *)
 
   build-images:
@@ -177,7 +180,7 @@ jobs:
           platforms: linux/${{ matrix.arch }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            BASE_IMAGE=${{ env.REGISTRY_PREFIX }}matifali/dockerdl-base:latest
+            BASE_IMAGE=${{ env.REGISTRY_PREFIX }}matifali/dockerdl-base:${{ env.BASE_TAG }}
           outputs: type=image,name=${{ env.REGISTRY_PREFIX }}matifali/dockerdl,push-by-digest=true,name-canonical=true,push=true
       - name: Export digest
         run: mkdir -p /tmp/digests && touch "/tmp/digests/${DIGEST#sha256:}"
@@ -193,6 +196,9 @@ jobs:
 
   merge-images:
     needs: build-images
+    # Publish every image whose two legs passed even if another image failed;
+    # PRs only need the untagged per-arch pushes to prove the children build
+    if: ${{ !cancelled() && github.event_name != 'pull_request' }}
     strategy:
       fail-fast: false
       matrix:
@@ -233,6 +239,8 @@ jobs:
       - name: Create multi-arch manifest
         working-directory: /tmp/digests
         run: |
+          set -- *
+          [ "$#" -eq 2 ] || { echo "expected 2 digests, got $#: $*"; exit 1; }
           # shellcheck disable=SC2046  # tags and digests never contain spaces
           docker buildx imagetools create \
             $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \

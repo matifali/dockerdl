@@ -38,11 +38,11 @@ RUN curl -fsSL -o zellij.tar.gz "https://github.com/zellij-org/zellij/releases/l
 ARG PYTHON_VER=3.13
 ENV UV_PYTHON_INSTALL_DIR=/opt/uv/python \
     VIRTUAL_ENV=/opt/venv \
-    PATH="/opt/venv/bin:${PATH}"
+    PATH="/opt/venv/bin:/home/ubuntu/.local/bin:${PATH}"
 RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_UNMANAGED_INSTALL=/usr/local/bin sh && \
     uv python install "${PYTHON_VER}" && \
     uv venv --python "${PYTHON_VER}" --seed "${VIRTUAL_ENV}" && \
-    chown -R ubuntu:ubuntu "${VIRTUAL_ENV}"
+    chown -R ubuntu:ubuntu /opt/uv "${VIRTUAL_ENV}"
 
 USER ubuntu
 WORKDIR /home/ubuntu
@@ -61,6 +61,7 @@ RUN uv pip install --no-cache \
     scipy \
     scikit-image \
     scikit-learn \
+    setuptools \
     sympy \
     seaborn \
     tqdm
