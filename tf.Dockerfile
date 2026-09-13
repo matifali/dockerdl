@@ -4,3 +4,5 @@ FROM ${BASE_IMAGE}
 # A blank value will install the latest version
 ARG TF_VERSION=
 RUN uv pip install --no-cache "tensorflow[and-cuda]${TF_VERSION:+==${TF_VERSION}}"
+# Don't let TF pre-allocate all GPU memory; matters with several kernels or torch alongside
+ENV TF_FORCE_GPU_ALLOW_GROWTH=true
