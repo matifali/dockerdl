@@ -1,14 +1,10 @@
-# Build arguments
-ARG CUDA_VER=13.0.2
-ARG UBUNTU_VER=24.04
-# Download the base image
-FROM nvidia/cuda:${CUDA_VER}-cudnn-runtime-ubuntu${UBUNTU_VER}
-# you can check for all available images at https://hub.docker.com/r/nvidia/cuda/tags
+# Literal tag (no ARG) so Dependabot can bump it; see https://hub.docker.com/r/nvidia/cuda/tags
+# `base` flavour only: torch and tensorflow[and-cuda] ship their own CUDA/cuDNN libs via pip
+FROM nvidia/cuda:13.3.1-base-ubuntu26.04
 # Install as root
 USER root
 # Shell
 SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
-ARG ZELLIJ_VERSION=v0.40.1
 
 # Install dependencies
 ARG DEBIAN_FRONTEND="noninteractive"
@@ -23,7 +19,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     nvidia-modprobe \
     nvtop \
     openssh-client \
-    python3 python3-dev python-is-python3 \
     sudo \
     tmux \
     unzip \
@@ -35,22 +30,32 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Download and install zellij
-RUN curl -L -o zellij.tar.gz "https://github.com/zellij-org/zellij/releases/download/${ZELLIJ_VERSION}/zellij-x86_64-unknown-linux-musl.tar.gz" && \
+ARG TARGETARCH
+RUN case "${TARGETARCH}" in \
+    "amd64") ARCH_SUFFIX="x86_64" ;; \
+    "arm64") ARCH_SUFFIX="aarch64" ;; \
+    *) echo "Unsupported TARGETARCH: ${TARGETARCH}"; exit 1 ;; \
+    esac && \
+    curl -fsSL -o zellij.tar.gz "https://github.com/zellij-org/zellij/releases/latest/download/zellij-${ARCH_SUFFIX}-unknown-linux-musl.tar.gz" && \
     tar -xzf zellij.tar.gz -C /usr/local/bin && \
     rm zellij.tar.gz && \
     zellij --version
 
+# uv-managed Python in a venv owned by `ubuntu`, so packages can be added without sudo
+# TensorFlow has no 3.14 wheels yet, so 3.13 is the newest version that works everywhere
+ARG PYTHON_VER=3.13
+ENV UV_PYTHON_INSTALL_DIR=/opt/uv/python \
+    VIRTUAL_ENV=/opt/venv \
+    PATH="/opt/venv/bin:${PATH}"
+RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_UNMANAGED_INSTALL=/usr/local/bin sh && \
+    uv python install "${PYTHON_VER}" && \
+    uv venv --python "${PYTHON_VER}" --seed "${VIRTUAL_ENV}" && \
+    chown -R ubuntu:ubuntu "${VIRTUAL_ENV}"
+
 # Change to your user
 USER ubuntu
-# Chnage Workdir
 WORKDIR /home/ubuntu
-# Download and install uv
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/home/ubuntu/.local/bin:/home/ubuntu/.cargo/bin:${PATH}"
-USER root
-# Install packages inside the new environment
-RUN uv pip install --no-cache --system --break-system-packages --upgrade pip setuptools wheel && \
-    uv pip install --no-cache --system --break-system-packages \
+RUN uv pip install --no-cache \
     ipywidgets \
     jupyterlab \
     matplotlib \
@@ -61,15 +66,11 @@ RUN uv pip install --no-cache --system --break-system-packages --upgrade pip set
     Pillow \
     plotly \
     PyYAML \
+    ruff \
     scipy \
     scikit-image \
     scikit-learn \
     sympy \
     seaborn \
     tqdm && \
-    find /usr/local/lib/python3.* -name '__pycache__' -exec rm -rf {} + && \
-    # Set path of python packages
-    echo "# Set path of python packages" >>/home/ubuntu/.bashrc && \
-    echo "export PATH=\$HOME/.local/bin:\$PATH" >>/home/ubuntu/.bashrc
-# Change to your user
-USER ubuntu
+    find "${VIRTUAL_ENV}/lib" -name '__pycache__' -exec rm -rf {} +

@@ -4,6 +4,9 @@ on:
     branches: ["main"]
   pull_request:
   workflow_dispatch:
+  schedule:
+    # Weekly rebuild so unpinned pip packages stay current
+    - cron: "0 3 * * 1"
 
 concurrency:
   group: dockerdl-${{ github.ref }}
@@ -16,7 +19,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
       - name: Run Hadolint
-        uses: hadolint/hadolint-action@v3.4.0
+        uses: hadolint/hadolint-action@v3.5.0
         with:
           dockerfile: "*.Dockerfile"
           failure-threshold: error
@@ -35,9 +38,6 @@ jobs:
           - dockerfile: ./base.Dockerfile
             image: matifali/dockerdl-base
             tag: latest
-          - dockerfile: ./conda.Dockerfile
-            image: matifali/dockerdl
-            tag: conda
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -93,9 +93,6 @@ jobs:
           - dockerfile: ./tf-torch.Dockerfile
             tag: tf-torch
             base_image: matifali/dockerdl-base:latest
-          - dockerfile: ./tf-torch-conda.Dockerfile
-            tag: tf-torch-conda
-            base_image: matifali/dockerdl:conda
     steps:
       - name: Maximize build space
         run: |
@@ -137,7 +134,7 @@ jobs:
           images: matifali/dockerdl
           tags: |
             type=raw,value=${{ matrix.tag }}
-            type=raw,value=latest,enable=${{ matrix.tag == 'tf-torch-conda' && github.ref == 'refs/heads/main' }}
+            type=raw,value=latest,enable=${{ matrix.tag == 'tf-torch' && github.ref == 'refs/heads/main' }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.clone_url }}
             org.opencontainers.image.revision=${{ github.sha }}
