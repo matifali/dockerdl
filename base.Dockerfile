@@ -1,6 +1,9 @@
-# Literal tag (no ARG) so Dependabot can bump it; see https://hub.docker.com/r/nvidia/cuda/tags
-# `base` flavour only: torch and tensorflow[and-cuda] ship their own CUDA/cuDNN libs via pip
-FROM nvidia/cuda:13.3.1-base-ubuntu26.04
+# Literal tag (no ARG) so Dependabot can bump it
+# Plain Ubuntu: CUDA/cuDNN come entirely from the torch and tensorflow[and-cuda] pip wheels;
+# nvidia-container-toolkit mounts the driver, nvidia-smi and libnvidia-ml from the host
+FROM ubuntu:26.04
+ENV NVIDIA_VISIBLE_DEVICES=all \
+    NVIDIA_DRIVER_CAPABILITIES=compute,utility
 USER root
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 

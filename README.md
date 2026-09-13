@@ -33,7 +33,7 @@ Don't waste time on setting up a deep learning environment while you can get a d
 | PyTorch              | `torch`              | :heavy_check_mark: | :x:                | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/torch?style=for-the-badge&label=)    |
 | PyTorch + Tensorflow | `tf-torch`, `latest` | :heavy_check_mark: | :heavy_check_mark: | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/matifali/dockerdl/tf-torch?style=for-the-badge&label=) |
 
-All images use a [uv](https://docs.astral.sh/uv/)-managed Python 3.13 in `/opt/venv`. The `conda` and `tf-torch-conda` tags are no longer built; the last conda-based images remain on Docker Hub.
+All images use a [uv](https://docs.astral.sh/uv/)-managed Python 3.13 in `/opt/venv` on Ubuntu 26.04. CUDA 12.6 and cuDNN come from the PyTorch and TensorFlow pip wheels, so the only host requirement is an NVIDIA driver that supports CUDA 12 (>= 525). The `conda` and `tf-torch-conda` tags are no longer built; the last conda-based images remain on Docker Hub.
 
 You can see the full list of tags [https://hub.docker.com/r/matifali/dockerdl/tags](https://hub.docker.com/r/matifali/dockerdl/tags?page=1&ordering=last_updated).
 
@@ -74,7 +74,7 @@ Modify the corresponding `[Dockerfile]` to add or delete packages.
 
 ### Build
 
-To change the CUDA or Ubuntu version, edit the `FROM` line in `base.Dockerfile` (see [nvidia/cuda tags](https://hub.docker.com/r/nvidia/cuda/tags)). PyTorch and TensorFlow ship their own CUDA libraries via pip, so the base image's CUDA version only needs to be supported by your host driver.
+The base image is plain `ubuntu`; edit the `FROM` line in `base.Dockerfile` to change it. The CUDA version is chosen by the pip wheels: PyTorch comes from the `cu126` index (`torch.Dockerfile`, `tf-torch.Dockerfile`) and TensorFlow's `[and-cuda]` extra pulls matching CUDA 12 libraries.
 
 Python is installed by [uv](https://docs.astral.sh/uv/) into `/opt/venv` (owned by the `ubuntu` user, so `uv pip install <pkg>` works without sudo). Pick the version with `--build-arg PYTHON_VER=3.13` (default; the newest version TensorFlow ships wheels for).
 
@@ -131,4 +131,4 @@ If you find any issue please feel free to create an [issue](https://github.com/m
   
 ## References
 
-[^1]: This image is based on the minimal [nvidia/cuda](https://hub.docker.com/r/nvidia/cuda) `base` flavour (CUDA and cuDNN libraries come from the PyTorch/TensorFlow pip wheels) and uses [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to access the GPU.
+[^1]: CUDA and cuDNN libraries come from the PyTorch/TensorFlow pip wheels; [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) mounts the host driver, `nvidia-smi` and `libnvidia-ml` into the container.
