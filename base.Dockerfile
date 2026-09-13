@@ -1,10 +1,8 @@
 # Literal tag (no ARG) so Dependabot can bump it; see https://hub.docker.com/r/nvidia/cuda/tags
 # `base` flavour only: torch and tensorflow[and-cuda] ship their own CUDA/cuDNN libs via pip
 FROM nvidia/cuda:13.3.1-base-ubuntu26.04
-# Install as root
 USER root
-# Shell
-SHELL ["/bin/bash", "--login", "-o", "pipefail", "-c"]
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install dependencies
 ARG DEBIAN_FRONTEND="noninteractive"
@@ -30,13 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Download and install zellij
-ARG TARGETARCH
-RUN case "${TARGETARCH}" in \
-    "amd64") ARCH_SUFFIX="x86_64" ;; \
-    "arm64") ARCH_SUFFIX="aarch64" ;; \
-    *) echo "Unsupported TARGETARCH: ${TARGETARCH}"; exit 1 ;; \
-    esac && \
-    curl -fsSL -o zellij.tar.gz "https://github.com/zellij-org/zellij/releases/latest/download/zellij-${ARCH_SUFFIX}-unknown-linux-musl.tar.gz" && \
+RUN curl -fsSL -o zellij.tar.gz "https://github.com/zellij-org/zellij/releases/latest/download/zellij-$(uname -m)-unknown-linux-musl.tar.gz" && \
     tar -xzf zellij.tar.gz -C /usr/local/bin && \
     rm zellij.tar.gz && \
     zellij --version
@@ -52,7 +44,6 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_UNMANAGED_INSTALL=/usr/l
     uv venv --python "${PYTHON_VER}" --seed "${VIRTUAL_ENV}" && \
     chown -R ubuntu:ubuntu "${VIRTUAL_ENV}"
 
-# Change to your user
 USER ubuntu
 WORKDIR /home/ubuntu
 RUN uv pip install --no-cache \
@@ -72,5 +63,4 @@ RUN uv pip install --no-cache \
     scikit-learn \
     sympy \
     seaborn \
-    tqdm && \
-    find "${VIRTUAL_ENV}/lib" -name '__pycache__' -exec rm -rf {} +
+    tqdm
